@@ -10,7 +10,6 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Alert from '@mui/material/Alert';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -224,11 +223,6 @@ export default function CategoriesPage() {
       <OnboardingTour page="categories" />
       <Stack sx={{ flex: 1, my: 2 }} spacing={2}>
         <Stack>
-          <Breadcrumbs aria-label="breadcrumb" sx={{ my: 1 }}>
-            <Typography sx={{ color: 'text.primary', fontWeight: 600 }}>
-              {t('title')}
-            </Typography>
-          </Breadcrumbs>
           <Box
             sx={{
               display: 'flex',

@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import ButtonBase from '@mui/material/ButtonBase';
 import CheckIcon from '@mui/icons-material/Check';
+import { HexColorPicker } from 'react-colorful';
 
 const presetColors = [
   '#F44336', '#E91E63', '#9C27B0', '#673AB7',
@@ -54,26 +55,17 @@ export default function ColorPicker({ value, onChange, error, helperText }: Colo
             )}
           </ButtonBase>
         ))}
-        <Box
-          component="input"
-          type="color"
-          value={value}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
-          sx={{
-            width: 32,
-            height: 32,
-            borderRadius: '50%',
-            border: '2px solid',
-            borderColor: 'divider',
-            padding: 0,
-            cursor: 'pointer',
-            appearance: 'none',
-            backgroundColor: 'transparent',
-            '&::-webkit-color-swatch-wrapper': { padding: 0 },
-            '&::-webkit-color-swatch': { border: 'none', borderRadius: '50%' },
-            '&::-moz-color-swatch': { border: 'none', borderRadius: '50%' },
-          }}
-        />
+      </Box>
+      <Box
+        sx={{
+          width: '100%',
+          '.react-colorful': {
+            width: '100%',
+            borderRadius: 1,
+          },
+        }}
+      >
+        <HexColorPicker color={value} onChange={onChange} />
       </Box>
       <Box
         sx={{

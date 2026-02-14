@@ -3,7 +3,6 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -114,11 +113,6 @@ export default function ProfilePage() {
     <Container sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       <Stack sx={{ flex: 1, my: 2 }} spacing={3}>
         <Stack>
-          <Breadcrumbs aria-label="breadcrumb" sx={{ my: 1 }}>
-            <Typography sx={{ color: 'text.primary', fontWeight: 600 }}>
-              {t('title')}
-            </Typography>
-          </Breadcrumbs>
           <Typography variant="h4">{t('title')}</Typography>
         </Stack>
 
