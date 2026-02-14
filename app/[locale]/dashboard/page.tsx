@@ -100,7 +100,7 @@ export default function DashboardPage() {
         getPaymentMethodsSummary(currentMonth, currentYear),
         getCategoriesSummary(currentMonth, currentYear, 'CASH_OUT'),
         getCategoriesSummary(currentMonth, currentYear, 'CASH_IN'),
-        getLastSixMonths(),
+        getLastSixMonths(currentMonth, currentYear),
       ]);
 
       if (controller.signal.aborted) return;

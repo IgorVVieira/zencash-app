@@ -43,9 +43,9 @@ export async function getCategoriesSummary(
   return response.data;
 }
 
-export async function getLastSixMonths(): Promise<MonthSummary[]> {
+export async function getLastSixMonths(month: number, year: number): Promise<MonthSummary[]> {
   const response = await api.get<MonthSummary[]>(
-    '/api/transactions/dashboard/last-six-months',
+    `/api/transactions/dashboard/last-six-months/${month}/${year}`,
   );
   return response.data;
 }
