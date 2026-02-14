@@ -5,7 +5,26 @@ import { driver, DriveStep } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import { useTranslations } from 'next-intl';
 
-const TOUR_STORAGE_KEY = 'zencash_tour_completed';
+const TOUR_STORAGE_KEY_PREFIX = 'zencash_tour_completed';
+
+function getUserIdFromToken(): string | null {
+  try {
+    const token = localStorage.getItem('zencash_token');
+    if (!token) return null;
+    const base64 = token.split('.')[1];
+    if (!base64) return null;
+    const json = atob(base64.replace(/-/g, '+').replace(/_/g, '/'));
+    const payload = JSON.parse(json);
+    return payload.sub || payload.id || null;
+  } catch {
+    return null;
+  }
+}
+
+function getTourStorageKey(): string {
+  const userId = getUserIdFromToken();
+  return userId ? `${TOUR_STORAGE_KEY_PREFIX}_${userId}` : TOUR_STORAGE_KEY_PREFIX;
+}
 
 type TourPage = 'dashboard' | 'categories' | 'transactions' | 'import';
 
@@ -182,8 +201,9 @@ export default function OnboardingTour({ page, onComplete }: OnboardingTourProps
     const steps = getTourSteps(page, t);
 
     // Mark tour as completed early to prevent re-triggering on fast remounts
-    const completedTours = JSON.parse(localStorage.getItem(TOUR_STORAGE_KEY) || '{}');
-    localStorage.setItem(TOUR_STORAGE_KEY, JSON.stringify({ ...completedTours, [page]: true }));
+    const storageKey = getTourStorageKey();
+    const completedTours = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    localStorage.setItem(storageKey, JSON.stringify({ ...completedTours, [page]: true }));
 
     const driverObj = driver({
       showProgress: true,
@@ -203,16 +223,18 @@ export default function OnboardingTour({ page, onComplete }: OnboardingTourProps
         skipBtn.innerText = t('skip');
         skipBtn.className = 'driver-popover-skip-btn';
         skipBtn.onclick = () => {
-          const completedTours = JSON.parse(localStorage.getItem(TOUR_STORAGE_KEY) || '{}');
-          localStorage.setItem(TOUR_STORAGE_KEY, JSON.stringify({ ...completedTours, [page]: true }));
+          const key = getTourStorageKey();
+          const completedTours = JSON.parse(localStorage.getItem(key) || '{}');
+          localStorage.setItem(key, JSON.stringify({ ...completedTours, [page]: true }));
           driverObj.destroy();
           onComplete?.();
         };
         popover.footerButtons.prepend(skipBtn);
       },
       onDestroyed: () => {
-        const completedTours = JSON.parse(localStorage.getItem(TOUR_STORAGE_KEY) || '{}');
-        localStorage.setItem(TOUR_STORAGE_KEY, JSON.stringify({ ...completedTours, [page]: true }));
+        const key = getTourStorageKey();
+        const completedTours = JSON.parse(localStorage.getItem(key) || '{}');
+        localStorage.setItem(key, JSON.stringify({ ...completedTours, [page]: true }));
         onComplete?.();
       },
     });
@@ -222,7 +244,7 @@ export default function OnboardingTour({ page, onComplete }: OnboardingTourProps
   }, [t, onComplete, page]);
 
   useEffect(() => {
-    const completedTours = JSON.parse(localStorage.getItem(TOUR_STORAGE_KEY) || '{}');
+    const completedTours = JSON.parse(localStorage.getItem(getTourStorageKey()) || '{}');
     if (!completedTours[page]) {
       // Small delay to ensure elements are rendered
       const timer = setTimeout(() => {
@@ -248,11 +270,12 @@ export default function OnboardingTour({ page, onComplete }: OnboardingTourProps
 }
 
 export function resetTour(page?: TourPage) {
+  const storageKey = getTourStorageKey();
   if (page) {
-    const completedTours = JSON.parse(localStorage.getItem(TOUR_STORAGE_KEY) || '{}');
+    const completedTours = JSON.parse(localStorage.getItem(storageKey) || '{}');
     const { [page]: _, ...rest } = completedTours;
-    localStorage.setItem(TOUR_STORAGE_KEY, JSON.stringify(rest));
+    localStorage.setItem(storageKey, JSON.stringify(rest));
   } else {
-    localStorage.removeItem(TOUR_STORAGE_KEY);
+    localStorage.removeItem(storageKey);
   }
 }
