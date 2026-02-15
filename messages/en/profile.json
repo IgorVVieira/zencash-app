@@ -15,5 +15,17 @@
   "settings": "Settings",
   "restartTour": "Introduction tour",
   "restartTourDescription": "View the ZenCash welcome tour again",
-  "restartTourButton": "Restart tour"
+  "restartTourButton": "Restart tour",
+  "subscriptions": "My subscriptions",
+  "subscriptionsLoading": "Loading subscriptions...",
+  "subscriptionsEmpty": "No subscriptions found.",
+  "subscriptionsLoadError": "Failed to load subscriptions.",
+  "subscriptionStatus": {
+    "ACTIVE": "Active",
+    "PENDING_PAYMENT": "Pending payment",
+    "CANCELED": "Canceled"
+  },
+  "subscriptionDuration": "{days} days",
+  "subscriptionStart": "Start",
+  "subscriptionEnd": "End"
 }

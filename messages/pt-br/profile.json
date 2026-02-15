@@ -15,5 +15,17 @@
   "settings": "Configurações",
   "restartTour": "Tour de introdução",
   "restartTourDescription": "Veja novamente o tour de boas-vindas do ZenCash",
-  "restartTourButton": "Reiniciar tour"
+  "restartTourButton": "Reiniciar tour",
+  "subscriptions": "Minhas assinaturas",
+  "subscriptionsLoading": "Carregando assinaturas...",
+  "subscriptionsEmpty": "Nenhuma assinatura encontrada.",
+  "subscriptionsLoadError": "Erro ao carregar assinaturas.",
+  "subscriptionStatus": {
+    "ACTIVE": "Ativa",
+    "PENDING_PAYMENT": "Aguardando pagamento",
+    "CANCELED": "Cancelada"
+  },
+  "subscriptionDuration": "{days} dias",
+  "subscriptionStart": "Início",
+  "subscriptionEnd": "Término"
 }

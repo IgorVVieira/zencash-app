@@ -17,9 +17,13 @@ import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import CalendarTodayRoundedIcon from '@mui/icons-material/CalendarTodayRounded';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import Chip from '@mui/material/Chip';
+import Skeleton from '@mui/material/Skeleton';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import CardMembershipRoundedIcon from '@mui/icons-material/CardMembershipRounded';
 import { getMe } from '../../lib/auth';
 import { createPaymentLink } from '../../lib/payments';
+import { getSubscriptions, type UserSubscription } from '../../lib/subscriptions';
 import { useSubscription } from '../../lib/subscription-context';
 import { resetTour } from '../../components/OnboardingTour';
 import { useRouter } from '@/i18n/navigation';
@@ -43,6 +47,9 @@ export default function ProfilePage() {
   const [error, setError] = React.useState('');
   const [renewLoading, setRenewLoading] = React.useState(false);
   const [renewError, setRenewError] = React.useState('');
+  const [subscriptions, setSubscriptions] = React.useState<UserSubscription[]>([]);
+  const [subscriptionsLoading, setSubscriptionsLoading] = React.useState(true);
+  const [subscriptionsError, setSubscriptionsError] = React.useState('');
 
   const handleRestartTour = () => {
     resetTour();
@@ -76,6 +83,20 @@ export default function ProfilePage() {
       .finally(() => {
         if (!controller.signal.aborted) setLoading(false);
       });
+
+    getSubscriptions()
+      .then((data) => {
+        if (!controller.signal.aborted) setSubscriptions(data);
+      })
+      .catch((err) => {
+        if (controller.signal.aborted) return;
+        if (err instanceof Error && err.name === 'CanceledError') return;
+        setSubscriptionsError(t('subscriptionsLoadError'));
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setSubscriptionsLoading(false);
+      });
+
     return () => controller.abort();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -235,6 +256,53 @@ export default function ProfilePage() {
               <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
                 <Box sx={{ px: 3, py: 2 }}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                    {t('subscriptions')}
+                  </Typography>
+                </Box>
+                <Divider />
+                {subscriptionsLoading ? (
+                  <Stack sx={{ px: 3, py: 2 }} spacing={2}>
+                    {[0, 1].map((i) => (
+                      <Skeleton key={i} variant="rounded" height={100} />
+                    ))}
+                  </Stack>
+                ) : subscriptionsError ? (
+                  <Alert severity="error" sx={{ m: 2 }}>
+                    {subscriptionsError}
+                  </Alert>
+                ) : subscriptions.length === 0 ? (
+                  <Typography variant="body2" sx={{ px: 3, py: 3, color: 'text.secondary', textAlign: 'center' }}>
+                    {t('subscriptionsEmpty')}
+                  </Typography>
+                ) : (
+                  <Box
+                    sx={{
+                      px: 2,
+                      py: 2,
+                      maxHeight: 340,
+                      overflowY: 'auto',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 1.5,
+                    }}
+                  >
+                    {subscriptions.map((sub) => (
+                      <SubscriptionCard
+                        key={sub.id}
+                        subscription={sub}
+                        formatDate={formatDate}
+                        t={t}
+                      />
+                    ))}
+                  </Box>
+                )}
+              </CardContent>
+            </Card>
+
+            <Card variant="outlined" sx={{ mt: 3 }}>
+              <CardContent sx={{ p: 0, '&:last-child': { pb: 0 } }}>
+                <Box sx={{ px: 3, py: 2 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                     {t('settings')}
                   </Typography>
                 </Box>
@@ -293,5 +361,82 @@ function InfoRow({
       </Box>
       <Typography variant="body2">{value}</Typography>
     </Stack>
+  );
+}
+
+const STATUS_COLORS: Record<UserSubscription['status'], 'success' | 'warning' | 'error'> = {
+  ACTIVE: 'success',
+  PENDING_PAYMENT: 'warning',
+  CANCELED: 'error',
+};
+
+function SubscriptionCard({
+  subscription,
+  formatDate,
+  t,
+}: {
+  subscription: UserSubscription;
+  formatDate: (iso: string) => string;
+  t: (key: string, values?: Record<string, string | number>) => string;
+}) {
+  const priceFormatted = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(subscription.price / 100);
+
+  return (
+    <Card
+      variant="outlined"
+      sx={{
+        flexShrink: 0,
+        borderLeft: 4,
+        borderLeftColor: `${STATUS_COLORS[subscription.status]}.main`,
+      }}
+    >
+      <CardContent sx={{ py: 1.5, px: 2, '&:last-child': { pb: 1.5 } }}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          sx={{ justifyContent: 'space-between', alignItems: { sm: 'center' }, gap: 1 }}
+        >
+          <Stack direction="row" sx={{ alignItems: 'center', gap: 1.5, minWidth: 0 }}>
+            <CardMembershipRoundedIcon sx={{ color: 'text.secondary', fontSize: 20 }} />
+            <Box sx={{ minWidth: 0 }}>
+              <Typography variant="body2" sx={{ fontWeight: 600 }} noWrap>
+                {subscription.productName}
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }} noWrap>
+                {subscription.productDescription}
+              </Typography>
+            </Box>
+          </Stack>
+          <Stack direction="row" sx={{ alignItems: 'center', gap: 1, flexShrink: 0 }}>
+            <Typography variant="body2" sx={{ fontWeight: 600 }}>
+              {priceFormatted}
+            </Typography>
+            <Chip
+              label={t(`subscriptionStatus.${subscription.status}`)}
+              color={STATUS_COLORS[subscription.status]}
+              size="small"
+              variant="outlined"
+            />
+          </Stack>
+        </Stack>
+        <Stack
+          direction="row"
+          sx={{ mt: 1, gap: 3, color: 'text.secondary' }}
+          divider={<Typography variant="caption" sx={{ color: 'text.disabled' }}>·</Typography>}
+        >
+          <Typography variant="caption">
+            {t('subscriptionDuration', { days: subscription.durationInDays })}
+          </Typography>
+          <Typography variant="caption">
+            {t('subscriptionStart')}: {formatDate(subscription.startAt)}
+          </Typography>
+          <Typography variant="caption">
+            {t('subscriptionEnd')}: {formatDate(subscription.endAt)}
+          </Typography>
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }

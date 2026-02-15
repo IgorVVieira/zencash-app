@@ -455,6 +455,61 @@
           }
         }
       },
+      "UserSubscriptionResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Subscription unique identifier",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "User unique identifier",
+            "example": "550e8400-e29b-41d4-a716-446655440001"
+          },
+          "productName": {
+            "type": "string",
+            "description": "Product name",
+            "example": "Premium Plan"
+          },
+          "productDescription": {
+            "type": "string",
+            "description": "Product description",
+            "example": "Access to all premium features for 30 days"
+          },
+          "durationInDays": {
+            "type": "number",
+            "description": "Subscription duration in days",
+            "example": 30
+          },
+          "price": {
+            "type": "number",
+            "description": "Subscription price in cents",
+            "example": 2999
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING_PAYMENT", "ACTIVE", "CANCELED"],
+            "description": "Subscription status",
+            "example": "ACTIVE"
+          },
+          "startAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Subscription start date",
+            "example": "2024-01-15T10:30:00Z"
+          },
+          "endAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Subscription end date",
+            "example": "2024-02-14T10:30:00Z"
+          }
+        }
+      },
       "TransactionsByMethodDto": {
         "type": "object",
         "properties": {
@@ -1476,6 +1531,43 @@
                       "example": "Invalid webhook secret"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/subscriptions": {
+      "get": {
+        "tags": ["Payments"],
+        "summary": "List user subscriptions",
+        "description": "Retrieve all subscriptions for the authenticated user. Returns subscription details including status, product information, and validity period.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of user subscriptions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserSubscriptionResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - invalid or missing JWT token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
                 }
               }
             }
