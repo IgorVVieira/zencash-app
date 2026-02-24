@@ -62,6 +62,9 @@ export async function generateMetadata({
     title: `💲 ${t('title')}`,
     description: t('description'),
     keywords,
+    verification: {
+      google: 'JxzhWCi7TXJKnlFoAeSctJ-8i_M9yVGTeXKer0-SsMY',
+    },
     manifest: '/manifest.json',
     appleWebApp: {
       capable: true,
