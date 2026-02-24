@@ -9,10 +9,13 @@ import Paper from '@mui/material/Paper';
 import Container from '@mui/material/Container';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import Link from 'next/link';
 import { importOFX } from '../../lib/transactions';
 import { useToast } from '../../components/ToastProvider';
@@ -31,6 +34,7 @@ export default function ImportPage() {
   const [error, setError] = React.useState('');
   const [success, setSuccess] = React.useState(false);
   const [dragging, setDragging] = React.useState(false);
+  const [useLlm, setUseLlm] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +99,7 @@ export default function ImportPage() {
     setSuccess(false);
 
     try {
-      await importOFX(file);
+      await importOFX(file, useLlm);
       setSuccess(true);
       showToast({ message: t('successMessage') });
       setFile(null);
@@ -185,6 +189,31 @@ export default function ImportPage() {
                 </Stack>
               )}
             </Box>
+
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={useLlm}
+                  onChange={(e) => setUseLlm(e.target.checked)}
+                  disabled={!hasSubscription}
+                  color="primary"
+                />
+              }
+              label={
+                <Stack direction="row" spacing={1} alignItems="flex-start">
+                  <AutoFixHighIcon sx={{ fontSize: 20, color: hasSubscription ? 'warning.main' : 'text.disabled', mt: 0.25 }} />
+                  <Stack>
+                    <Typography variant="body2" fontWeight={500}>
+                      {t('useLlmLabel')}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {t('useLlmHelper')}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              }
+              sx={!hasSubscription ? { opacity: 0.4 } : undefined}
+            />
 
             {error && <Alert severity="error">{error}</Alert>}
 

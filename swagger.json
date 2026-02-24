@@ -1025,6 +1025,11 @@
                     "type": "string",
                     "format": "binary",
                     "description": "OFX file to import"
+                  },
+                  "useLlm": {
+                    "type": "boolean",
+                    "description": "Use LLM to automatically categorize imported transactions",
+                    "default": false
                   }
                 }
               }

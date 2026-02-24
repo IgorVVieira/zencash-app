@@ -17,5 +17,7 @@
   "step4": "In a few moments, your transactions will appear on the transactions page.",
   "goToTransactions": "Go to Transactions",
   "invalidFileType": "Invalid format. Please select a .ofx file",
-  "fileTooLarge": "File too large. Maximum size: {max}"
+  "fileTooLarge": "File too large. Maximum size: {max}",
+  "useLlmLabel": "Auto-categorize with AI",
+  "useLlmHelper": "AI will try to match each transaction with your existing categories. If no match is found, the transaction remains uncategorized."
 }

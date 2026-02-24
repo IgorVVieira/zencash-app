@@ -1,10 +1,17 @@
 {
+  "nav": {
+    "features": "Features",
+    "pricing": "Pricing",
+    "faq": "FAQ"
+  },
   "hero": {
     "titleStart": "Stay zen managing",
     "titleHighlight": "your money",
     "subtitle": "Import your bank statement, categorize and see where every penny goes.",
-    "cta": "Start for free",
-    "ctaSecondary": "I already have an account"
+    "cta": "Get started",
+    "ctaSecondary": "I already have an account",
+    "badge": "✨ Powered by AI",
+    "noCreditCard": "Pay via PIX · Cancel anytime"
   },
   "sections": {
     "dashboard": {
@@ -26,6 +33,11 @@
       "label": "Categories",
       "title": "Organize your way",
       "description": "Create categories with colors, classify as income or expense and watch the charts adapt automatically."
+    },
+    "aiCategorization": {
+      "label": "Artificial Intelligence",
+      "title": "AI that categorizes for you",
+      "description": "When you import your OFX statement, our AI analyzes each transaction and automatically suggests the most appropriate category — saving you time and keeping your finances organized effortlessly."
     }
   },
   "preview": {
@@ -44,13 +56,13 @@
     "importStatement": "Import statement",
     "selectOFX": "Select a .ofx file",
     "importBtn": "Import",
-    "andOthers": "and more..."
+    "andOthers": "and more...",
+    "aiProcessing": "AI auto-categorizing..."
   },
   "pricing": {
     "title": "Plans",
     "subtitle": "Choose the right plan for you.",
     "recommended": "Recommended",
-    "comingSoon": "Coming soon",
     "perMonth": "/mo",
     "pro": {
       "title": "Pro",
@@ -60,22 +72,23 @@
         "Unlimited OFX statement imports",
         "Unlimited categories",
         "Complete transaction history",
-        "Priority support"
+        "Priority support",
+        "AI auto-categorization on import"
       ],
+      "aiHighlight": "Save time with AI",
       "cta": "Subscribe Pro"
     },
-    "proAi": {
-      "title": "Pro + AI",
-      "price": "25.97",
-      "features": [
-        "Everything in Pro",
-        "AI assistant for financial flow",
-        "Smart spending analysis",
-        "Personalized saving suggestions",
-        "Future balance forecast"
-      ],
-      "cta": "Subscribe Pro + AI"
-    }
+    "guarantee": "1-month access · Renew via PIX whenever you want"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "items": [
+      { "q": "Do you have a free plan?", "a": "We don't offer a free plan. Our Pro plan gives you full access for 1 month upon payment via PIX." },
+      { "q": "How does payment work?", "a": "Payment is made via PIX QR Code. After payment, you get access to the Pro plan for 30 days. There's no automatic debit — each renewal is done manually via QR Code." },
+      { "q": "How do I stop renewing?", "a": "Simple: just don't pay next month's QR Code. No cancellation process, no hassle, no fees. Access expires naturally after 30 days." },
+      { "q": "Is my financial data secure?", "a": "Yes. Your data is encrypted and never shared with third parties. We take your privacy very seriously." },
+      { "q": "What is AI auto-categorization?", "a": "When you import your OFX statement, our AI analyzes the name of each transaction and automatically suggests the most appropriate category, saving you time." }
+    ]
   },
   "footer": {
     "tagline": "Stay zen managing your money."

@@ -1,10 +1,17 @@
 {
+  "nav": {
+    "features": "Funcionalidades",
+    "pricing": "Preço",
+    "faq": "Perguntas frequentes"
+  },
   "hero": {
     "titleStart": "Fique zen cuidando",
     "titleHighlight": "do seu dinheiro",
     "subtitle": "Importe seu extrato bancário, categorize e veja para onde vai cada centavo.",
-    "cta": "Começar grátis",
-    "ctaSecondary": "Já tenho conta"
+    "cta": "Começar agora",
+    "ctaSecondary": "Já tenho conta",
+    "badge": "✨ Com Inteligência Artificial",
+    "noCreditCard": "Pagamento via PIX · Cancele quando quiser"
   },
   "sections": {
     "dashboard": {
@@ -26,6 +33,11 @@
       "label": "Categorias",
       "title": "Organize do seu jeito",
       "description": "Crie categorias com cores, classifique como entrada ou saída e veja os gráficos se adaptarem automaticamente."
+    },
+    "aiCategorization": {
+      "label": "Inteligência Artificial",
+      "title": "IA que categoriza por você",
+      "description": "Ao importar seu extrato OFX, nossa IA analisa cada transação e sugere automaticamente a categoria mais adequada — economizando seu tempo e mantendo suas finanças organizadas sem esforço."
     }
   },
   "preview": {
@@ -44,13 +56,13 @@
     "importStatement": "Importar extrato",
     "selectOFX": "Selecione um arquivo .ofx",
     "importBtn": "Importar",
-    "andOthers": "e outros..."
+    "andOthers": "e outros...",
+    "aiProcessing": "IA categorizando automaticamente..."
   },
   "pricing": {
     "title": "Planos",
     "subtitle": "Escolha o plano ideal para você.",
     "recommended": "Recomendado",
-    "comingSoon": "Em breve",
     "perMonth": "/mês",
     "pro": {
       "title": "Pro",
@@ -60,22 +72,23 @@
         "Importação ilimitada de extratos OFX",
         "Categorias ilimitadas",
         "Histórico completo de transações",
-        "Suporte prioritário"
+        "Suporte prioritário",
+        "Categorização automática por IA na importação"
       ],
+      "aiHighlight": "Economize tempo com IA",
       "cta": "Assinar Pro"
     },
-    "proAi": {
-      "title": "Pro + IA",
-      "price": "25,97",
-      "features": [
-        "Tudo do plano Pro",
-        "Assistente IA para fluxo financeiro",
-        "Análise inteligente de gastos",
-        "Sugestões personalizadas de economia",
-        "Previsão de saldo futuro"
-      ],
-      "cta": "Assinar Pro + IA"
-    }
+    "guarantee": "Acesso por 1 mês · Renove via PIX quando quiser"
+  },
+  "faq": {
+    "title": "Perguntas frequentes",
+    "items": [
+      { "q": "Vocês têm plano gratuito?", "a": "Não oferecemos plano gratuito. Nosso plano Pro dá acesso completo por 1 mês mediante pagamento via PIX." },
+      { "q": "Como funciona o pagamento?", "a": "O pagamento é feito via PIX QR Code. Após o pagamento, você tem acesso ao plano Pro por 30 dias. Não há débito automático — cada renovação é feita manualmente pelo QR Code." },
+      { "q": "Como faço para não renovar?", "a": "Simples: basta não pagar o QR Code do mês seguinte. Sem cancelamento, sem burocracia, sem multa. O acesso expira naturalmente ao fim dos 30 dias." },
+      { "q": "Meus dados financeiros estão seguros?", "a": "Sim. Seus dados são criptografados e nunca são compartilhados com terceiros. Levamos sua privacidade muito a sério." },
+      { "q": "O que é a categorização automática por IA?", "a": "Ao importar seu extrato OFX, nossa IA analisa o nome de cada transação e sugere a categoria mais adequada automaticamente, economizando seu tempo." }
+    ]
   },
   "footer": {
     "tagline": "Fique zen cuidando do seu dinheiro."
