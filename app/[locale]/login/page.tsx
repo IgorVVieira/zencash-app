@@ -71,6 +71,8 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
+const registrationDisabled = process.env.NEXT_PUBLIC_REGISTRATION_DISABLED === 'true';
+
 export default function LoginPage() {
   const router = useRouter();
   const t = useTranslations('common');
@@ -274,7 +276,8 @@ export default function LoginPage() {
             >
               {t('auth.signInWithGoogle')}
             </Button>
-<Typography sx={{ textAlign: 'center' }}>
+{!registrationDisabled && (
+            <Typography sx={{ textAlign: 'center' }}>
               {t('auth.noAccount')}{' '}
               <Link
                 href="/register"
@@ -284,6 +287,7 @@ export default function LoginPage() {
                 {t('auth.register')}
               </Link>
             </Typography>
+          )}
           </Box>
         </Card>
       </SignInContainer>

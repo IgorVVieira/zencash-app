@@ -24,6 +24,7 @@ import AppTheme from '../../shared-theme/AppTheme';
 import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import { createUser, login } from '../../lib/auth';
 import { createPaymentLink } from '../../lib/payments';
+import { isAllowedRedirectUrl } from '../../lib/api';
 import { GoogleIcon } from '../login/components/CustomIcons';
 import CoinLogo from '../../components/CoinLogo';
 import { useTranslations } from 'next-intl';
@@ -189,7 +190,9 @@ export default function RegisterPage() {
       localStorage.setItem('zencash_token', authResponse.token);
 
       const paymentLink = await createPaymentLink();
-      window.location.href = paymentLink.url;
+      if (isAllowedRedirectUrl(paymentLink.url)) {
+        window.location.href = paymentLink.url;
+      }
     } catch (error: unknown) {
       if (error && typeof error === 'object' && 'response' in error) {
         const axiosError = error as { response?: { status?: number; data?: { message?: string } } };

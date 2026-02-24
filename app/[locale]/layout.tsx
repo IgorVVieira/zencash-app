@@ -33,9 +33,35 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'common.metadata' });
+
+  const keywords =
+    locale === 'pt-br'
+      ? [
+          'zencash',
+          'zen cash',
+          'zencash app',
+          'controle de receitas e despesas',
+          'app de finanças pessoais',
+          'planilha financeira online',
+          'categorizar gastos pessoais',
+          'importar extrato bancário',
+          'aplicativo de controle financeiro',
+        ]
+      : [
+          'zencash',
+          'zen cash',
+          'zencash app',
+          'personal finance app',
+          'income and expense tracker',
+          'bank statement import',
+          'expense categorization',
+          'financial management app',
+        ];
+
   return {
     title: `💲 ${t('title')}`,
     description: t('description'),
+    keywords,
     manifest: '/manifest.json',
     appleWebApp: {
       capable: true,

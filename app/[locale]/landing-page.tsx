@@ -419,6 +419,8 @@ function AICategorizationPreview() {
 // Page
 // ---------------------------------------------------------------------------
 
+const registrationDisabled = process.env.NEXT_PUBLIC_REGISTRATION_DISABLED === 'true';
+
 export default function LandingPage() {
   const t = useTranslations('landing');
   const tc = useTranslations('common');
@@ -469,9 +471,11 @@ export default function LandingPage() {
               <Button variant="text" href="/login">
                 {tc('auth.signIn')}
               </Button>
-              <Button variant="contained" href="/register" size="small">
-                {tc('auth.signUp')}
-              </Button>
+              {!registrationDisabled && (
+                <Button variant="contained" href="/register" size="small">
+                  {tc('auth.signUp')}
+                </Button>
+              )}
             </Stack>
           </Stack>
         </Container>
@@ -515,16 +519,20 @@ export default function LandingPage() {
             {t('hero.subtitle')}
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
-            <Button variant="contained" size="large" href="/register" sx={{ px: 4 }}>
-              {t('hero.cta')}
-            </Button>
+            {!registrationDisabled && (
+              <Button variant="contained" size="large" href="/register" sx={{ px: 4 }}>
+                {t('hero.cta')}
+              </Button>
+            )}
             <Button variant="outlined" size="large" href="/login" sx={{ px: 4 }}>
               {t('hero.ctaSecondary')}
             </Button>
           </Stack>
-          <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-            {t('hero.noCreditCard')}
-          </Typography>
+          {!registrationDisabled && (
+            <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+              {t('hero.noCreditCard')}
+            </Typography>
+          )}
         </Container>
 
         {/* Section: Dashboard */}
@@ -772,16 +780,20 @@ export default function LandingPage() {
                       );
                     })}
                   </Stack>
-                  <Button variant="contained" size="large" fullWidth href="/register?pay=true">
-                    {t('pricing.pro.cta')}
-                  </Button>
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ textAlign: 'center', display: 'block', mt: 1.5 }}
-                  >
-                    {t('pricing.guarantee')}
-                  </Typography>
+                  {!registrationDisabled && (
+                    <>
+                      <Button variant="contained" size="large" fullWidth href="/register?pay=true">
+                        {t('pricing.pro.cta')}
+                      </Button>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ textAlign: 'center', display: 'block', mt: 1.5 }}
+                      >
+                        {t('pricing.guarantee')}
+                      </Typography>
+                    </>
+                  )}
                 </Card>
               ))}
             </Box>

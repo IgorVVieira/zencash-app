@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "ZenCash",
-    "description": "ZenCash - Financial management system"
+    "description": "ZenCash - Personal finance app to track income and expenses, categorize spending, and import bank statements."
   },
   "nav": {
     "menu": "Menu",

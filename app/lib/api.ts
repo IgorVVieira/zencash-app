@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const ALLOWED_REDIRECT_DOMAINS = ["https://app.abacatepay.com"];
+const ALLOWED_REDIRECT_ORIGINS = ["https://app.abacatepay.com"];
 
-function isAllowedRedirectUrl(url: string): boolean {
+export function isAllowedRedirectUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
-    return ALLOWED_REDIRECT_DOMAINS.includes(parsed.hostname);
+    return ALLOWED_REDIRECT_ORIGINS.includes(parsed.origin);
   } catch {
     return false;
   }

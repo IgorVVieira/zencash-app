@@ -23,6 +23,7 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import CardMembershipRoundedIcon from '@mui/icons-material/CardMembershipRounded';
 import { getMe } from '../../lib/auth';
 import { createPaymentLink } from '../../lib/payments';
+import { isAllowedRedirectUrl } from '../../lib/api';
 import { getSubscriptions, type UserSubscription } from '../../lib/subscriptions';
 import { useSubscription } from '../../lib/subscription-context';
 import { resetTour } from '../../components/OnboardingTour';
@@ -61,7 +62,9 @@ export default function ProfilePage() {
     setRenewError('');
     try {
       const paymentLink = await createPaymentLink();
-      window.location.href = paymentLink.url;
+      if (isAllowedRedirectUrl(paymentLink.url)) {
+        window.location.href = paymentLink.url;
+      }
     } catch {
       setRenewError(t('renewError'));
     } finally {

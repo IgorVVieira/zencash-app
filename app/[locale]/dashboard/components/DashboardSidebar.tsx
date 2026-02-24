@@ -21,6 +21,7 @@ import { usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { useSubscription } from '../../../lib/subscription-context';
 import { createPaymentLink } from '../../../lib/payments';
+import { isAllowedRedirectUrl } from '../../../lib/api';
 import DashboardSidebarContext from '../context/DashboardSidebarContext';
 import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '../constants';
 import DashboardSidebarPageItem from './DashboardSidebarPageItem';
@@ -53,7 +54,9 @@ export default function DashboardSidebar({
     setRenewLoading(true);
     try {
       const paymentLink = await createPaymentLink();
-      window.location.href = paymentLink.url;
+      if (isAllowedRedirectUrl(paymentLink.url)) {
+        window.location.href = paymentLink.url;
+      }
     } catch {
       setRenewLoading(false);
     }
