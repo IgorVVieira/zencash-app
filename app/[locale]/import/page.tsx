@@ -16,8 +16,10 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import Link from 'next/link';
 import { importOFX } from '../../lib/transactions';
+import { getPendingImport, PendingImport } from '../../lib/transaction-imports';
 import { useToast } from '../../components/ToastProvider';
 import OnboardingTour from '../../components/OnboardingTour';
 import { useSubscription } from '../../lib/subscription-context';
@@ -35,6 +37,31 @@ export default function ImportPage() {
   const [dragging, setDragging] = React.useState(false);
   const [useLlm, setUseLlm] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const POLL_INTERVAL_MS = 60_000;
+  const [pendingImport, setPendingImport] = React.useState<PendingImport | null>(null);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    let timerId: ReturnType<typeof setTimeout>;
+
+    async function check() {
+      try {
+        const result = await getPendingImport();
+        if (!cancelled) {
+          const isActive = result?.status === 'pending' || result?.status === 'processing';
+          setPendingImport(isActive ? result : null);
+        }
+      } catch {
+        // silent — leave previous state, retry next poll
+      }
+      if (!cancelled) timerId = setTimeout(check, POLL_INTERVAL_MS);
+    }
+
+    check();
+    return () => { cancelled = true; clearTimeout(timerId); };
+  }, []);
+
+  const isImportBlocked = !!pendingImport;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selected = event.target.files?.[0] ?? null;
@@ -105,6 +132,13 @@ export default function ImportPage() {
       if (inputRef.current) {
         inputRef.current.value = '';
       }
+      try {
+        const pending = await getPendingImport();
+        const isActive = pending?.status === 'pending' || pending?.status === 'processing';
+        setPendingImport(isActive ? pending : null);
+      } catch {
+        // silent — poll will catch it
+      }
     } catch {
       // interceptor handles the error toast
     } finally {
@@ -124,6 +158,20 @@ export default function ImportPage() {
           {t('info')}
         </Alert>
 
+        {isImportBlocked && (
+          <Alert icon={<HourglassEmptyIcon />} severity="warning">
+            <Typography variant="body2" fontWeight={600}>
+              {t('pendingImport.title')}
+            </Typography>
+            <Typography variant="body2">
+              {t('pendingImport.description')}
+            </Typography>
+            <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
+              {t('pendingImport.status')}: {t(`pendingImport.statusLabel.${pendingImport!.status}`)}
+            </Typography>
+          </Alert>
+        )}
+
         <Paper variant="outlined" sx={{ p: 3 }} data-tour="import-dropzone">
           <Stack spacing={3}>
             <Typography variant="body1" color="text.secondary">
@@ -139,12 +187,12 @@ export default function ImportPage() {
                 borderRadius: 2,
                 p: 4,
                 textAlign: 'center',
-                cursor: hasSubscription ? 'pointer' : 'default',
+                cursor: (hasSubscription && !isImportBlocked) ? 'pointer' : 'default',
                 transition: 'border-color 0.2s',
-                '&:hover': hasSubscription ? { borderColor: 'primary.main' } : undefined,
-                ...(!hasSubscription ? { opacity: 0.4, pointerEvents: 'none' } : {}),
+                '&:hover': (hasSubscription && !isImportBlocked) ? { borderColor: 'primary.main' } : undefined,
+                ...(!hasSubscription || isImportBlocked ? { opacity: 0.4, pointerEvents: 'none' } : {}),
               }}
-              onClick={() => hasSubscription && inputRef.current?.click()}
+              onClick={() => (hasSubscription && !isImportBlocked) && inputRef.current?.click()}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
@@ -155,7 +203,7 @@ export default function ImportPage() {
                 accept=".ofx"
                 onChange={handleFileChange}
                 hidden
-                disabled={!hasSubscription}
+                disabled={!hasSubscription || isImportBlocked}
               />
               {file ? (
                 <Stack alignItems="center" spacing={1}>
@@ -182,13 +230,13 @@ export default function ImportPage() {
                 <Switch
                   checked={useLlm}
                   onChange={(e) => setUseLlm(e.target.checked)}
-                  disabled={!hasSubscription}
+                  disabled={!hasSubscription || isImportBlocked}
                   color="primary"
                 />
               }
               label={
                 <Stack direction="row" spacing={1} alignItems="flex-start">
-                  <AutoFixHighIcon sx={{ fontSize: 20, color: hasSubscription ? 'warning.main' : 'text.disabled', mt: 0.25 }} />
+                  <AutoFixHighIcon sx={{ fontSize: 20, color: (hasSubscription && !isImportBlocked) ? 'warning.main' : 'text.disabled', mt: 0.25 }} />
                   <Stack>
                     <Typography variant="body2" fontWeight={500}>
                       {t('useLlmLabel')}
@@ -199,7 +247,7 @@ export default function ImportPage() {
                   </Stack>
                 </Stack>
               }
-              sx={!hasSubscription ? { opacity: 0.4 } : undefined}
+              sx={(!hasSubscription || isImportBlocked) ? { opacity: 0.4 } : undefined}
             />
 
             {error && <Alert severity="error">{error}</Alert>}
@@ -227,9 +275,9 @@ export default function ImportPage() {
               size="large"
               startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <CloudUploadIcon />}
               onClick={handleSubmit}
-              disabled={loading || !file || !hasSubscription}
+              disabled={loading || !file || !hasSubscription || isImportBlocked}
               fullWidth
-              sx={!hasSubscription ? { opacity: 0.4, pointerEvents: 'none' } : undefined}
+              sx={(!hasSubscription || isImportBlocked) ? { opacity: 0.4, pointerEvents: 'none' } : undefined}
             >
               {loading ? t('uploading') : t('importBtn')}
             </Button>

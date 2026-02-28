@@ -42,6 +42,10 @@
     {
       "name": "Payments",
       "description": "Payment link generation and subscription management"
+    },
+    {
+      "name": "Transaction Imports",
+      "description": "Transaction import management endpoints"
     }
   ],
   "components": {
@@ -637,6 +641,28 @@
             "description": "Total expenses for the month",
             "example": 3500.0
           }
+        }
+      }
+    },
+    "GetPendingImportResponse": {
+      "type": "object",
+      "nullable": true,
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "userId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "processing", "completed", "failed"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     }
@@ -1949,6 +1975,50 @@
           },
           "401": {
             "description": "Unauthorized - invalid or missing JWT token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/transaction-imports/get-pending": {
+      "get": {
+        "tags": ["Transaction Imports"],
+        "summary": "Get pending import",
+        "description": "Returns the pending or in-progress transaction import for the authenticated user, or null if none exists.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pending import found (or null if none)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPendingImportResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {

@@ -19,5 +19,14 @@
   "invalidFileType": "Invalid format. Please select a .ofx file",
   "fileTooLarge": "File too large. Maximum size: {max}",
   "useLlmLabel": "Auto-categorize with AI",
-  "useLlmHelper": "AI will try to match each transaction with your existing categories. If no match is found, the transaction remains uncategorized."
+  "useLlmHelper": "AI will try to match each transaction with your existing categories. If no match is found, the transaction remains uncategorized.",
+  "pendingImport": {
+    "title": "Import in progress",
+    "description": "An import is already being processed. Please wait for it to complete before uploading a new file.",
+    "status": "Status",
+    "statusLabel": {
+      "pending": "Pending",
+      "processing": "Processing..."
+    }
+  }
 }

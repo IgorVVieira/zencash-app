@@ -19,5 +19,14 @@
   "invalidFileType": "Formato inválido. Selecione um arquivo .ofx",
   "fileTooLarge": "Arquivo muito grande. Tamanho máximo: {max}",
   "useLlmLabel": "Categorizar automaticamente com IA",
-  "useLlmHelper": "A IA tentará associar cada transação às suas categorias existentes. Se não encontrar equivalente, a transação fica sem categoria."
+  "useLlmHelper": "A IA tentará associar cada transação às suas categorias existentes. Se não encontrar equivalente, a transação fica sem categoria.",
+  "pendingImport": {
+    "title": "Importação em andamento",
+    "description": "Uma importação já está sendo processada. Aguarde a conclusão antes de enviar um novo arquivo.",
+    "status": "Status",
+    "statusLabel": {
+      "pending": "Pendente",
+      "processing": "Processando..."
+    }
+  }
 }
