@@ -4,7 +4,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Alert from '@mui/material/Alert';
 import StatCard from './components/StatCard';
 import LastSixMonthsChart from './components/LastSixMonthsChart';
 import PaymentMethodsChart from './components/PaymentMethodsChart';
@@ -76,19 +75,11 @@ export default function DashboardPage() {
   const [loadingCatOut, setLoadingCatOut] = React.useState(true);
   const [loadingCatIn, setLoadingCatIn] = React.useState(true);
   const [loadingSixMonths, setLoadingSixMonths] = React.useState(true);
-  const [error, setError] = React.useState('');
-
-  const [loadError, setLoadError] = React.useState(() => t('loadError'));
-
-  React.useEffect(() => {
-    setLoadError(t('loadError'));
-  }, [t]);
 
   React.useEffect(() => {
     const controller = new AbortController();
 
     async function loadAll() {
-      setError('');
       setLoadingMonth(true);
       setLoadingPayments(true);
       setLoadingCatOut(true);
@@ -105,45 +96,25 @@ export default function DashboardPage() {
 
       if (controller.signal.aborted) return;
 
-      if (results[0].status === 'fulfilled') {
-        setMonthTransactions(results[0].value);
-      } else {
-        setError(loadError);
-      }
+      if (results[0].status === 'fulfilled') setMonthTransactions(results[0].value);
       setLoadingMonth(false);
 
-      if (results[1].status === 'fulfilled') {
-        setPaymentMethods(results[1].value);
-      } else {
-        setError(loadError);
-      }
+      if (results[1].status === 'fulfilled') setPaymentMethods(results[1].value);
       setLoadingPayments(false);
 
-      if (results[2].status === 'fulfilled') {
-        setCategoriesCashOut(results[2].value);
-      } else {
-        setError(loadError);
-      }
+      if (results[2].status === 'fulfilled') setCategoriesCashOut(results[2].value);
       setLoadingCatOut(false);
 
-      if (results[3].status === 'fulfilled') {
-        setCategoriesCashIn(results[3].value);
-      } else {
-        setError(loadError);
-      }
+      if (results[3].status === 'fulfilled') setCategoriesCashIn(results[3].value);
       setLoadingCatIn(false);
 
-      if (results[4].status === 'fulfilled') {
-        setLastSixMonths(results[4].value);
-      } else {
-        setError(loadError);
-      }
+      if (results[4].status === 'fulfilled') setLastSixMonths(results[4].value);
       setLoadingSixMonths(false);
     }
 
     loadAll();
     return () => controller.abort();
-  }, [currentMonth, currentYear, loadError]);
+  }, [currentMonth, currentYear]);
 
   // Compute stat card data
   const { totalCashIn, totalCashOut, balance, daysLabels, dailyCashIn, dailyCashOut, dailyBalance } =
@@ -212,11 +183,6 @@ export default function DashboardPage() {
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
       <OnboardingTour page="dashboard" />
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
 
       {/* Header with filter */}
       <Box

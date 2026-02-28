@@ -8,9 +8,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import { forgotPassword } from '../../../lib/auth';
+import { useToast } from '../../../components/ToastProvider';
 import { useTranslations } from 'next-intl';
 
 interface ForgotPasswordProps {
@@ -20,9 +20,8 @@ interface ForgotPasswordProps {
 
 export default function ForgotPassword({ open, handleClose }: ForgotPasswordProps) {
   const t = useTranslations('common');
+  const { showToast } = useToast();
   const [loading, setLoading] = React.useState(false);
-  const [message, setMessage] = React.useState('');
-  const [error, setError] = React.useState('');
 
   const handleSubmit = async (event: React.BaseSyntheticEvent) => {
     event.preventDefault();
@@ -32,18 +31,21 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
     if (!email) return;
 
     setLoading(true);
-    setError('');
-    setMessage('');
 
     try {
-      const response = await forgotPassword(email);
-      setMessage(response.message || t('forgotPassword.successDefault'));
+      await forgotPassword(email);
+      showToast({ message: t('forgotPassword.successDefault'), severity: 'success' });
+      handleClose();
     } catch (err: unknown) {
       if (err && typeof err === 'object' && 'response' in err) {
-        const axiosError = err as { response?: { data?: { message?: string } } };
-        setError(axiosError.response?.data?.message || t('errors.forgotPasswordError'));
+        const axiosError = err as { response?: { status?: number } };
+        if (axiosError.response?.status === 404) {
+          showToast({ message: t('errors.profileNotFound'), severity: 'error' });
+        } else {
+          showToast({ message: t('errors.forgotPasswordError'), severity: 'error' });
+        }
       } else {
-        setError(t('errors.connectionRetry'));
+        showToast({ message: t('errors.forgotPasswordError'), severity: 'error' });
       }
     } finally {
       setLoading(false);
@@ -51,8 +53,6 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
   };
 
   const handleDialogClose = () => {
-    setMessage('');
-    setError('');
     setLoading(false);
     handleClose();
   };
@@ -76,8 +76,6 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
         <DialogContentText>
           {t('forgotPassword.description')}
         </DialogContentText>
-        {message && <Alert severity="success">{message}</Alert>}
-        {error && <Alert severity="error">{error}</Alert>}
         <OutlinedInput
           autoFocus
           required

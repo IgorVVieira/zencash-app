@@ -65,7 +65,12 @@
     "deleteError": "Failed to delete {entity}.",
     "notFound": "{entity} not found.",
     "profileNotFound": "Profile not found.",
-    "forgotPasswordError": "Failed to send email. Please try again."
+    "forgotPasswordError": "Failed to send email. Please try again.",
+    "unexpectedError": "An unexpected error occurred. Please try again.",
+    "resetPasswordError": "Failed to reset password. Please try again.",
+    "invalidToken": "Invalid or expired token.",
+    "passwordMismatch": "Passwords do not match.",
+    "passwordMinReset": "Password must be at least 8 characters."
   },
   "actions": {
     "create": "Create",
@@ -98,6 +103,17 @@
     "emailLabel": "Email",
     "emailPlaceholder": "Email"
   },
+  "resetPassword": {
+    "title": "Create new password",
+    "description": "Enter the code received by email and set a new password.",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "••••••••",
+    "confirmPassword": "Confirm new password",
+    "confirmPasswordPlaceholder": "••••••••",
+    "submit": "Reset password",
+    "success": "Password reset successfully!",
+    "backToLogin": "Back to login"
+  },
   "subscription": {
     "expired": "Your subscription has expired",
     "expiredDescription": "Renew your subscription to get full access to all features.",
@@ -107,6 +123,8 @@
   "paymentSuccess": {
     "title": "Thank you for your payment!",
     "description": "Your access will be unlocked as soon as the payment is confirmed.",
-    "cta": "Go to login"
+    "cta": "Go to login",
+    "checkingPayment": "Verifying payment confirmation...",
+    "paymentPending": "Payment not yet confirmed. Please wait or refresh the page."
   }
 }

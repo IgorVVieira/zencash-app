@@ -26,7 +26,6 @@ import { useTranslations, useLocale } from 'next-intl';
 export default function ImportPage() {
   const { showToast } = useToast();
   const t = useTranslations('import');
-  const tc = useTranslations('common');
   const locale = useLocale();
   const { hasSubscription } = useSubscription();
   const [file, setFile] = React.useState<File | null>(null);
@@ -106,20 +105,8 @@ export default function ImportPage() {
       if (inputRef.current) {
         inputRef.current.value = '';
       }
-    } catch (err: unknown) {
-      if (err && typeof err === 'object' && 'response' in err) {
-        const axiosError = err as { response?: { status?: number; data?: { message?: string } } };
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Import error:', axiosError.response?.data?.message);
-        }
-        if (axiosError.response?.status === 400) {
-          setError(t('invalidFile'));
-        } else {
-          setError(t('importError'));
-        }
-      } else {
-        setError(tc('errors.connectionErrorShort'));
-      }
+    } catch {
+      // interceptor handles the error toast
     } finally {
       setLoading(false);
     }

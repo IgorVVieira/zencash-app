@@ -16,3 +16,8 @@ export async function getSubscriptions(): Promise<UserSubscription[]> {
   const response = await api.get<UserSubscription[]>('/api/subscriptions');
   return response.data;
 }
+
+export async function getActiveSubscription(): Promise<boolean> {
+  await api.get('/api/subscriptions/active', { _skipGlobalToast: true } as never);
+  return true;
+}

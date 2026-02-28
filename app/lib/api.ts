@@ -1,6 +1,16 @@
 import axios from "axios";
+import { toastEmitter } from "./toast-emitter";
 
 const ALLOWED_REDIRECT_ORIGINS = ["https://app.abacatepay.com"];
+
+// Endpoints de autenticação cujo 401 significa "token inválido", não "sessão expirada"
+const AUTH_MANAGEMENT_PATHS = [
+  "/api/auth/reset-password",
+  "/api/auth/validate-token",
+  "/api/auth/forgot-password",
+];
+
+const SUBSCRIPTION_CHECK_PATHS = ["/api/subscriptions/active"];
 
 export function isAllowedRedirectUrl(url: string): boolean {
   try {
@@ -31,11 +41,26 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem("zencash_token");
-      window.location.href = "/login";
+      const requestUrl = error.config?.url ?? "";
+      const isAuthManagement = AUTH_MANAGEMENT_PATHS.some((path) =>
+        requestUrl.includes(path)
+      );
+      if (!isAuthManagement) {
+        localStorage.removeItem("zencash_token");
+        window.location.href = "/login";
+        return new Promise(() => {});
+      }
     }
 
     if (error.response?.status === 403) {
+      const requestUrl403 = error.config?.url ?? "";
+      const isSubscriptionCheck = SUBSCRIPTION_CHECK_PATHS.some((path) =>
+        requestUrl403.includes(path)
+      );
+      if (isSubscriptionCheck) {
+        return Promise.reject(error);
+      }
+
       try {
         const rawApi = axios.create({
           baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -59,6 +84,15 @@ api.interceptors.response.use(
         window.location.href = "/login";
       }
       return new Promise(() => {});
+    }
+
+    if (!error.config?._skipGlobalToast) {
+      const status = error.response?.status;
+      if (!status) {
+        toastEmitter.emit({ messageKey: "errors.connectionError", severity: "error" });
+      } else if (status !== 401 && status !== 403) {
+        toastEmitter.emit({ messageKey: "errors.unexpectedError", severity: "error" });
+      }
     }
 
     return Promise.reject(error);

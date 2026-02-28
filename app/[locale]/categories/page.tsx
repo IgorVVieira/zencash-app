@@ -9,7 +9,6 @@ import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import Alert from '@mui/material/Alert';
 import {
   DataGrid,
   GridActionsCellItem,
@@ -42,7 +41,6 @@ export default function CategoriesPage() {
   const { hasSubscription } = useSubscription();
   const { categories, setCategories, setEditingCategory } = useCategory();
   const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
 
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [deletingCategory, setDeletingCategory] = React.useState<Category | null>(null);
@@ -54,7 +52,6 @@ export default function CategoriesPage() {
   };
 
   const loadCategories = React.useCallback(async (signal?: AbortSignal) => {
-    setError(null);
     setLoading(true);
     try {
       const data = await getCategories();
@@ -63,22 +60,12 @@ export default function CategoriesPage() {
     } catch (err: unknown) {
       if (signal?.aborted) return;
       if (err instanceof Error && err.name === 'CanceledError') return;
-      if (err && typeof err === 'object' && 'response' in err) {
-        const axiosError = err as { response?: { status?: number; data?: { message?: string } } };
-        if (axiosError.response?.status === 401) {
-          setError(tc('errors.sessionExpired'));
-        } else {
-          setError(axiosError.response?.data?.message || tc('errors.loadError', { entity: 'categorias' }));
-        }
-      } else {
-        setError(tc('errors.connectionErrorShort'));
-      }
     } finally {
       if (!signal?.aborted) {
         setLoading(false);
       }
     }
-  }, [tc, setCategories]);
+  }, [setCategories]);
 
   React.useEffect(() => {
     const controller = new AbortController();
@@ -121,13 +108,8 @@ export default function CategoriesPage() {
       setDeleteOpen(false);
       setDeletingCategory(null);
       showToast({ message: t('deleteSuccess') });
-    } catch (err: unknown) {
-      if (err && typeof err === 'object' && 'response' in err) {
-        const axiosError = err as { response?: { data?: { message?: string } } };
-        setError(axiosError.response?.data?.message || tc('errors.deleteError', { entity: 'categoria' }));
-      } else {
-        setError(tc('errors.connectionRetry'));
-      }
+    } catch {
+      // interceptor handles the error toast
     } finally {
       setDeleteLoading(false);
     }
@@ -262,10 +244,7 @@ export default function CategoriesPage() {
 
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }} data-tour="categories-grid">
           <Box sx={{ flex: 1, width: '100%' }}>
-            {error ? (
-              <Alert severity="error">{error}</Alert>
-            ) : (
-              <DataGrid
+            <DataGrid
                 rows={categories}
                 columns={columns}
                 loading={loading}
@@ -298,7 +277,6 @@ export default function CategoriesPage() {
                 }}
                 localeText={{ ...localeText, noRowsLabel: t('noRows') }}
               />
-            )}
           </Box>
         </Box>
       </Stack>

@@ -4,6 +4,8 @@ import * as React from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Slide, { type SlideProps } from '@mui/material/Slide';
+import { useTranslations } from 'next-intl';
+import { toastEmitter } from '../lib/toast-emitter';
 
 type Severity = 'success' | 'error' | 'info' | 'warning';
 
@@ -24,6 +26,7 @@ function SlideTransition(props: SlideProps) {
 }
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
+  const tc = useTranslations('common');
   const [open, setOpen] = React.useState(false);
   const [toast, setToast] = React.useState<ToastOptions>({
     message: '',
@@ -44,6 +47,12 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     if (reason === 'clickaway') return;
     setOpen(false);
   };
+
+  React.useEffect(() => {
+    return toastEmitter.subscribe(({ messageKey, severity }) => {
+      showToast({ message: tc(messageKey), severity: severity ?? 'error' });
+    });
+  }, [showToast, tc]);
 
   const value = React.useMemo(() => ({ showToast }), [showToast]);
 

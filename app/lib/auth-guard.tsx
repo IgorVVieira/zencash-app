@@ -9,14 +9,12 @@ import { SubscriptionProvider } from './subscription-context';
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [authorized, setAuthorized] = React.useState(false);
-  const [token, setToken] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const storedToken = localStorage.getItem('zencash_token');
     if (!storedToken) {
       router.replace('/login');
     } else {
-      setToken(storedToken);
       setAuthorized(true);
     }
   }, [router]);
@@ -30,7 +28,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <SubscriptionProvider token={token}>
+    <SubscriptionProvider>
       {children}
     </SubscriptionProvider>
   );

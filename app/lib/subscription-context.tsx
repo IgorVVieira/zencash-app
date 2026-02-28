@@ -1,47 +1,59 @@
 'use client';
 
 import * as React from 'react';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import { getActiveSubscription } from './subscriptions';
+
+const POLL_INTERVAL_MS = 60_000;
 
 interface SubscriptionContextValue {
   hasSubscription: boolean;
+  loading: boolean;
 }
 
 const SubscriptionContext = React.createContext<SubscriptionContextValue>({
   hasSubscription: false,
+  loading: true,
 });
 
-function decodeJwtPayload(token: string): Record<string, unknown> | null {
-  try {
-    const base64 = token.split('.')[1];
-    if (!base64) return null;
-    const json = atob(base64.replace(/-/g, '+').replace(/_/g, '/'));
-    const payload = JSON.parse(json);
-    if (typeof payload.exp === 'number' && payload.exp * 1000 < Date.now()) {
-      localStorage.removeItem('zencash_token');
-      window.location.href = '/login';
-      return null;
-    }
-    return payload;
-  } catch {
-    return null;
-  }
-}
+export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
+  const [hasSubscription, setHasSubscription] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
-export function SubscriptionProvider({
-  children,
-  token,
-}: {
-  children: React.ReactNode;
-  token: string | null;
-}) {
-  const hasSubscription = React.useMemo(() => {
-    if (!token) return false;
-    const payload = decodeJwtPayload(token);
-    return payload?.hasSubscription === true;
-  }, [token]);
+  React.useEffect(() => {
+    let cancelled = false;
+    let timerId: ReturnType<typeof setTimeout>;
+
+    async function check() {
+      try {
+        await getActiveSubscription();
+        if (!cancelled) setHasSubscription(true);
+      } catch {
+        if (!cancelled) setHasSubscription(false);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+      if (!cancelled) timerId = setTimeout(check, POLL_INTERVAL_MS);
+    }
+
+    check();
+    return () => {
+      cancelled = true;
+      clearTimeout(timerId);
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
-    <SubscriptionContext.Provider value={{ hasSubscription }}>
+    <SubscriptionContext.Provider value={{ hasSubscription, loading }}>
       {children}
     </SubscriptionContext.Provider>
   );

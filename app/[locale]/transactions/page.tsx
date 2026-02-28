@@ -8,7 +8,6 @@ import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import Alert from '@mui/material/Alert';
 import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import MonthYearPicker from '../../components/MonthYearPicker';
@@ -51,7 +50,6 @@ export default function TransactionsPage() {
     Number(searchParams.get('year')) || now.getFullYear()
   );
   const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
 
   const methodLabels: Record<string, string> = {
     PIX: tc('methods.PIX'),
@@ -62,7 +60,6 @@ export default function TransactionsPage() {
   };
 
   const loadTransactions = React.useCallback(async (signal?: AbortSignal) => {
-    setError(null);
     setLoading(true);
     try {
       const data = await getTransactionsByMonth(month, year);
@@ -71,22 +68,12 @@ export default function TransactionsPage() {
     } catch (err: unknown) {
       if (signal?.aborted) return;
       if (err instanceof Error && err.name === 'CanceledError') return;
-      if (err && typeof err === 'object' && 'response' in err) {
-        const axiosError = err as { response?: { status?: number; data?: { message?: string } } };
-        if (axiosError.response?.status === 401) {
-          setError(tc('errors.sessionExpired'));
-        } else {
-          setError(axiosError.response?.data?.message || tc('errors.loadError', { entity: 'transacoes' }));
-        }
-      } else {
-        setError(tc('errors.connectionErrorShort'));
-      }
     } finally {
       if (!signal?.aborted) {
         setLoading(false);
       }
     }
-  }, [month, year, tc, setTransactions]);
+  }, [month, year, setTransactions]);
 
   React.useEffect(() => {
     const controller = new AbortController();
@@ -259,10 +246,7 @@ export default function TransactionsPage() {
 
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }} data-tour="transactions-grid">
           <Box sx={{ flex: 1, width: '100%' }}>
-            {error ? (
-              <Alert severity="error">{error}</Alert>
-            ) : (
-              <DataGrid
+            <DataGrid
                 rows={rows}
                 columns={columns}
                 loading={loading}
@@ -296,7 +280,6 @@ export default function TransactionsPage() {
                 }}
                 localeText={{ ...localeText, noRowsLabel: t('noRows') }}
               />
-            )}
           </Box>
         </Box>
       </Stack>

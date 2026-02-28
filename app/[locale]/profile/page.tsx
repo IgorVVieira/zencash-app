@@ -27,6 +27,7 @@ import { isAllowedRedirectUrl } from '../../lib/api';
 import { getSubscriptions, type UserSubscription } from '../../lib/subscriptions';
 import { useSubscription } from '../../lib/subscription-context';
 import { resetTour } from '../../components/OnboardingTour';
+import { useToast } from '../../components/ToastProvider';
 import { useRouter } from '@/i18n/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 
@@ -42,15 +43,14 @@ export default function ProfilePage() {
   const t = useTranslations('profile');
   const locale = useLocale();
   const router = useRouter();
+  const { showToast } = useToast();
   const { hasSubscription } = useSubscription();
   const [user, setUser] = React.useState<UserProfile | null>(null);
   const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState('');
+  const [loadFailed, setLoadFailed] = React.useState(false);
   const [renewLoading, setRenewLoading] = React.useState(false);
-  const [renewError, setRenewError] = React.useState('');
   const [subscriptions, setSubscriptions] = React.useState<UserSubscription[]>([]);
   const [subscriptionsLoading, setSubscriptionsLoading] = React.useState(true);
-  const [subscriptionsError, setSubscriptionsError] = React.useState('');
 
   const handleRestartTour = () => {
     resetTour();
@@ -59,14 +59,13 @@ export default function ProfilePage() {
 
   const handleRenewSubscription = async () => {
     setRenewLoading(true);
-    setRenewError('');
     try {
       const paymentLink = await createPaymentLink();
       if (isAllowedRedirectUrl(paymentLink.url)) {
         window.location.href = paymentLink.url;
       }
     } catch {
-      setRenewError(t('renewError'));
+      showToast({ message: t('renewError'), severity: 'error' });
     } finally {
       setRenewLoading(false);
     }
@@ -81,7 +80,7 @@ export default function ProfilePage() {
       .catch((err) => {
         if (controller.signal.aborted) return;
         if (err instanceof Error && err.name === 'CanceledError') return;
-        setError(t('loadError'));
+        setLoadFailed(true);
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoading(false);
@@ -94,14 +93,12 @@ export default function ProfilePage() {
       .catch((err) => {
         if (controller.signal.aborted) return;
         if (err instanceof Error && err.name === 'CanceledError') return;
-        setSubscriptionsError(t('subscriptionsLoadError'));
       })
       .finally(() => {
         if (!controller.signal.aborted) setSubscriptionsLoading(false);
       });
 
     return () => controller.abort();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
@@ -112,10 +109,10 @@ export default function ProfilePage() {
     );
   }
 
-  if (error || !user) {
+  if (loadFailed || !user) {
     return (
       <Container sx={{ py: 4 }}>
-        <Alert severity="error">{error || t('notFound')}</Alert>
+        <Alert severity="error">{t('notFound')}</Alert>
       </Container>
     );
   }
@@ -246,11 +243,6 @@ export default function ProfilePage() {
                       {renewLoading ? t('redirecting') : t('renewSubscription')}
                     </Button>
                   </Stack>
-                  {renewError && (
-                    <Alert severity="error" sx={{ mx: 3, mb: 2 }}>
-                      {renewError}
-                    </Alert>
-                  )}
                 </CardContent>
               </Card>
             )}
@@ -269,10 +261,6 @@ export default function ProfilePage() {
                       <Skeleton key={i} variant="rounded" height={100} />
                     ))}
                   </Stack>
-                ) : subscriptionsError ? (
-                  <Alert severity="error" sx={{ m: 2 }}>
-                    {subscriptionsError}
-                  </Alert>
                 ) : subscriptions.length === 0 ? (
                   <Typography variant="body2" sx={{ px: 3, py: 3, color: 'text.secondary', textAlign: 'center' }}>
                     {t('subscriptionsEmpty')}

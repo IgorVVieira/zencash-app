@@ -14,7 +14,6 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
-import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -29,6 +28,7 @@ import { GoogleIcon } from '../login/components/CustomIcons';
 import CoinLogo from '../../components/CoinLogo';
 import { useTranslations } from 'next-intl';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
+import { useToast } from '../../components/ToastProvider';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -96,6 +96,7 @@ function maskPhone(value: string): string {
 
 export default function RegisterPage() {
   const t = useTranslations('common');
+  const { showToast } = useToast();
   const [showPassword, setShowPassword] = React.useState(false);
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState('');
@@ -108,7 +109,6 @@ export default function RegisterPage() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [loading, setLoading] = React.useState(false);
-  const [apiError, setApiError] = React.useState('');
 
   const validateInputs = () => {
     const name = document.getElementById('name') as HTMLInputElement;
@@ -174,7 +174,6 @@ export default function RegisterPage() {
     }
 
     setLoading(true);
-    setApiError('');
 
     const data = new FormData(event.currentTarget);
     const name = data.get('name') as string;
@@ -195,17 +194,14 @@ export default function RegisterPage() {
       }
     } catch (error: unknown) {
       if (error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as { response?: { status?: number; data?: { message?: string } } };
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Register error:', axiosError.response?.data?.message);
-        }
+        const axiosError = error as { response?: { status?: number } };
         if (axiosError.response?.status === 409) {
-          setApiError(t('errors.createAccountError'));
+          showToast({ message: t('errors.emailExists'), severity: 'error' });
         } else {
-          setApiError(t('errors.createAccountError'));
+          showToast({ message: t('errors.createAccountError'), severity: 'error' });
         }
       } else {
-        setApiError(t('errors.connectionError'));
+        showToast({ message: t('errors.connectionError'), severity: 'error' });
       }
     } finally {
       setLoading(false);
@@ -346,9 +342,6 @@ export default function RegisterPage() {
                 }}
               />
             </FormControl>
-            {apiError && (
-              <Alert severity="error">{apiError}</Alert>
-            )}
             <Button
               type="submit"
               fullWidth

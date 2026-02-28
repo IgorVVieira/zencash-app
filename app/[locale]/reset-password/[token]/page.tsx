@@ -4,7 +4,6 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
@@ -17,17 +16,15 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import ForgotPassword from './components/ForgotPassword';
-import AppTheme from '../../shared-theme/AppTheme';
-import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import CircularProgress from '@mui/material/CircularProgress';
+import AppTheme from '../../../shared-theme/AppTheme';
+import ColorModeSelect from '../../../shared-theme/ColorModeSelect';
 import { useRouter } from '@/i18n/navigation';
-import { login } from '../../lib/auth';
-import { GoogleIcon } from './components/CustomIcons';
-import CoinLogo from '../../components/CoinLogo';
+import { resetPassword } from '../../../lib/auth';
+import CoinLogo from '../../../components/CoinLogo';
 import { useTranslations } from 'next-intl';
-import LanguageSwitcher from '../../components/LanguageSwitcher';
-import { useToast } from '../../components/ToastProvider';
+import LanguageSwitcher from '../../../components/LanguageSwitcher';
+import { useToast } from '../../../components/ToastProvider';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -71,26 +68,52 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const registrationDisabled = process.env.NEXT_PUBLIC_REGISTRATION_DISABLED === 'true';
-
-export default function LoginPage() {
+export default function ResetPasswordPage({
+  params,
+}: {
+  params: Promise<{ token: string }>;
+}) {
   const router = useRouter();
   const t = useTranslations('common');
   const { showToast } = useToast();
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
-  const [showPassword, setShowPassword] = React.useState(false);
+
+  const { token } = React.use(params);
+
+  const decoded = decodeURIComponent(token);
+  const tokenValue = decoded.includes('=') ? decoded.split('=')[1] : decoded;
+
+  const [newPasswordError, setNewPasswordError] = React.useState(false);
+  const [newPasswordErrorMessage, setNewPasswordErrorMessage] = React.useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = React.useState(false);
+  const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = React.useState('');
+  const [showNewPassword, setShowNewPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const validateInputs = () => {
+    const newPassword = document.getElementById('newPassword') as HTMLInputElement;
+    const confirmPassword = document.getElementById('confirmPassword') as HTMLInputElement;
+    let isValid = true;
 
-  const handleClose = () => {
-    setOpen(false);
+    if (!newPassword.value || newPassword.value.length < 8) {
+      setNewPasswordError(true);
+      setNewPasswordErrorMessage(t('errors.passwordMinReset'));
+      isValid = false;
+    } else {
+      setNewPasswordError(false);
+      setNewPasswordErrorMessage('');
+    }
+
+    if (!confirmPassword.value || confirmPassword.value !== newPassword.value) {
+      setConfirmPasswordError(true);
+      setConfirmPasswordErrorMessage(t('errors.passwordMismatch'));
+      isValid = false;
+    } else {
+      setConfirmPasswordError(false);
+      setConfirmPasswordErrorMessage('');
+    }
+
+    return isValid;
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -102,54 +125,26 @@ export default function LoginPage() {
     setLoading(true);
 
     const data = new FormData(event.currentTarget);
-    const email = data.get('email') as string;
-    const password = data.get('password') as string;
+    const newPassword = data.get('newPassword') as string;
 
     try {
-      const response = await login({ email, password });
-      localStorage.setItem('zencash_token', response.token);
-      router.push('/dashboard');
+      await resetPassword(tokenValue, newPassword);
+      showToast({ message: t('resetPassword.success'), severity: 'success' });
+      router.push('/login');
     } catch (error: unknown) {
       if (error && typeof error === 'object' && 'response' in error) {
         const axiosError = error as { response?: { status?: number } };
-        if (axiosError.response?.status === 401) {
-          showToast({ message: t('errors.wrongCredentials'), severity: 'error' });
+        if (axiosError.response?.status === 400 || axiosError.response?.status === 401) {
+          showToast({ message: t('errors.invalidToken'), severity: 'error' });
         } else {
-          showToast({ message: t('errors.loginError'), severity: 'error' });
+          showToast({ message: t('errors.resetPasswordError'), severity: 'error' });
         }
       } else {
-        showToast({ message: t('errors.connectionError'), severity: 'error' });
+        showToast({ message: t('errors.resetPasswordError'), severity: 'error' });
       }
     } finally {
       setLoading(false);
     }
-  };
-
-  const validateInputs = () => {
-    const email = document.getElementById('email') as HTMLInputElement;
-    const password = document.getElementById('password') as HTMLInputElement;
-
-    let isValid = true;
-
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage(t('validation.emailRequired'));
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
-    }
-
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage(t('validation.passwordMin'));
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage('');
-    }
-
-    return isValid;
   };
 
   return (
@@ -173,7 +168,10 @@ export default function LoginPage() {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(1.5rem, 8vw, 1.75rem)' }}
           >
-            {t('auth.signIn')}
+            {t('resetPassword.title')}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {t('resetPassword.description')}
           </Typography>
           <Box
             component="form"
@@ -187,43 +185,27 @@ export default function LoginPage() {
             }}
           >
             <FormControl>
-              <FormLabel htmlFor="email">{t('auth.email')}</FormLabel>
+              <FormLabel htmlFor="newPassword">{t('resetPassword.newPassword')}</FormLabel>
               <TextField
-                error={emailError}
-                helperText={emailErrorMessage}
-                id="email"
-                type="email"
-                name="email"
-                placeholder={t('auth.emailPlaceholder')}
-                autoComplete="email"
+                error={newPasswordError}
+                helperText={newPasswordErrorMessage}
+                id="newPassword"
+                name="newPassword"
+                type={showNewPassword ? 'text' : 'password'}
+                placeholder={t('resetPassword.newPasswordPlaceholder')}
+                autoComplete="new-password"
                 autoFocus
                 required
                 fullWidth
                 variant="outlined"
-                color={emailError ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">{t('auth.password')}</FormLabel>
-              <TextField
-                error={passwordError}
-                helperText={passwordErrorMessage}
-                name="password"
-                placeholder="••••••"
-                type={showPassword ? 'text' : 'password'}
-                id="password"
-                autoComplete="current-password"
-                required
-                fullWidth
-                variant="outlined"
-                color={passwordError ? 'error' : 'primary'}
+                color={newPasswordError ? 'error' : 'primary'}
                 slotProps={{
                   input: {
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={() => setShowPassword((prev) => !prev)}
+                          aria-label="toggle new password visibility"
+                          onClick={() => setShowNewPassword((prev) => !prev)}
                           edge="end"
                           size="small"
                           sx={{
@@ -232,7 +214,7 @@ export default function LoginPage() {
                             '&:hover': { backgroundColor: 'transparent', border: 'none' },
                           }}
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showNewPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -240,47 +222,56 @@ export default function LoginPage() {
                 }}
               />
             </FormControl>
-            <ForgotPassword open={open} handleClose={handleClose} />
+            <FormControl>
+              <FormLabel htmlFor="confirmPassword">{t('resetPassword.confirmPassword')}</FormLabel>
+              <TextField
+                error={confirmPasswordError}
+                helperText={confirmPasswordErrorMessage}
+                id="confirmPassword"
+                name="confirmPassword"
+                type={showConfirmPassword ? 'text' : 'password'}
+                placeholder={t('resetPassword.confirmPasswordPlaceholder')}
+                autoComplete="new-password"
+                required
+                fullWidth
+                variant="outlined"
+                color={confirmPasswordError ? 'error' : 'primary'}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle confirm password visibility"
+                          onClick={() => setShowConfirmPassword((prev) => !prev)}
+                          edge="end"
+                          size="small"
+                          sx={{
+                            border: 'none',
+                            backgroundColor: 'transparent',
+                            '&:hover': { backgroundColor: 'transparent', border: 'none' },
+                          }}
+                        >
+                          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
+            </FormControl>
             <Button
               type="submit"
               fullWidth
               variant="contained"
               disabled={loading}
             >
-              {loading ? <CircularProgress size={24} /> : t('auth.signIn')}
+              {loading ? <CircularProgress size={24} /> : t('resetPassword.submit')}
             </Button>
-            <Link
-              component="button"
-              type="button"
-              onClick={handleClickOpen}
-              variant="body2"
-              sx={{ alignSelf: 'center' }}
-            >
-              {t('auth.forgotPassword')}
-            </Link>
-          </Box>
-          <Divider>{t('auth.or')}</Divider>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => alert(t('auth.signInWithGoogle'))}
-              startIcon={<GoogleIcon />}
-            >
-              {t('auth.signInWithGoogle')}
-            </Button>
-{!registrationDisabled && (
             <Typography sx={{ textAlign: 'center' }}>
-              {t('auth.noAccount')}{' '}
-              <Link
-                href="/register"
-                variant="body2"
-                sx={{ alignSelf: 'center' }}
-              >
-                {t('auth.register')}
+              <Link href="/login" variant="body2" sx={{ alignSelf: 'center' }}>
+                {t('resetPassword.backToLogin')}
               </Link>
             </Typography>
-          )}
           </Box>
         </Card>
       </SignInContainer>

@@ -36,7 +36,7 @@ export async function createUser(data: CreateUserRequest): Promise<UserResponse>
 }
 
 export async function forgotPassword(email: string): Promise<{ message: string }> {
-  const response = await api.post<{ message: string }>('/api/auth/forgot-password', { email });
+  const response = await api.post<{ message: string }>('/api/auth/forgot-password', { email }, { _skipGlobalToast: true });
   return response.data;
 }
 
@@ -48,4 +48,14 @@ export async function getMe(): Promise<UserResponse> {
 export function logout(): void {
   localStorage.removeItem('zencash_token');
   window.location.href = '/login';
+}
+
+export async function validateToken(token: string, type: string) {
+  const response = await api.post('/api/auth/validate-token', { token, type }, { _skipGlobalToast: true });
+  return response.data;
+}
+
+export async function resetPassword(token: string, newPassword: string) {
+  const response = await api.post<{ message: string }>('/api/auth/reset-password', { token, newPassword }, { _skipGlobalToast: true });
+  return response.data;
 }

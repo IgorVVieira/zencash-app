@@ -65,7 +65,12 @@
     "deleteError": "Erro ao excluir {entity}.",
     "notFound": "{entity} não encontrado(a).",
     "profileNotFound": "Perfil não encontrado.",
-    "forgotPasswordError": "Erro ao enviar e-mail. Tente novamente."
+    "forgotPasswordError": "Erro ao enviar e-mail. Tente novamente.",
+    "unexpectedError": "Ocorreu um erro inesperado. Tente novamente.",
+    "resetPasswordError": "Erro ao redefinir a senha. Tente novamente.",
+    "invalidToken": "Token inválido ou expirado.",
+    "passwordMismatch": "As senhas não coincidem.",
+    "passwordMinReset": "A senha deve ter pelo menos 8 caracteres."
   },
   "actions": {
     "create": "Criar",
@@ -98,6 +103,17 @@
     "emailLabel": "E-mail",
     "emailPlaceholder": "E-mail"
   },
+  "resetPassword": {
+    "title": "Criar nova senha",
+    "description": "Insira o código recebido por e-mail e defina uma nova senha.",
+    "newPassword": "Nova senha",
+    "newPasswordPlaceholder": "••••••••",
+    "confirmPassword": "Confirmar nova senha",
+    "confirmPasswordPlaceholder": "••••••••",
+    "submit": "Redefinir senha",
+    "success": "Senha redefinida com sucesso!",
+    "backToLogin": "Voltar para o login"
+  },
   "subscription": {
     "expired": "Sua assinatura expirou",
     "expiredDescription": "Renove sua assinatura para ter acesso completo a todas as funcionalidades.",
@@ -107,6 +123,8 @@
   "paymentSuccess": {
     "title": "Obrigado pelo seu pagamento!",
     "description": "Seu acesso será liberado assim que o pagamento for confirmado.",
-    "cta": "Ir para o login"
+    "cta": "Ir para o login",
+    "checkingPayment": "Verificando confirmação do pagamento...",
+    "paymentPending": "Pagamento ainda não confirmado. Aguarde ou atualize a página."
   }
 }

@@ -1,7 +1,9 @@
 'use client';
 
+import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -13,6 +15,11 @@ import ColorModeSelect from '../../../shared-theme/ColorModeSelect';
 import CoinLogo from '../../../components/CoinLogo';
 import LanguageSwitcher from '../../../components/LanguageSwitcher';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
+import { getActiveSubscription } from '../../../lib/subscriptions';
+
+const POLL_INTERVAL_MS = 3_000;
+const MAX_POLL_DURATION_MS = 120_000;
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -59,6 +66,42 @@ const PageContainer = styled(Stack)(({ theme }) => ({
 
 export default function PaymentSuccessPage() {
   const t = useTranslations('common');
+  const router = useRouter();
+  const [hasToken, setHasToken] = React.useState<boolean | null>(null);
+  const [polling, setPolling] = React.useState(false);
+
+  // Detect token client-side (localStorage unavailable on SSR)
+  React.useEffect(() => {
+    setHasToken(!!localStorage.getItem('zencash_token'));
+  }, []);
+
+  // Start polling when token is confirmed present
+  React.useEffect(() => {
+    if (!hasToken) return;
+    let cancelled = false;
+    let timerId: ReturnType<typeof setTimeout>;
+    const startTime = Date.now();
+    setPolling(true);
+
+    async function poll() {
+      if (cancelled || Date.now() - startTime >= MAX_POLL_DURATION_MS) {
+        if (!cancelled) setPolling(false);
+        return;
+      }
+      try {
+        await getActiveSubscription();
+        if (!cancelled) router.replace('/dashboard');
+      } catch {
+        if (!cancelled) timerId = setTimeout(poll, POLL_INTERVAL_MS);
+      }
+    }
+
+    poll();
+    return () => {
+      cancelled = true;
+      clearTimeout(timerId);
+    };
+  }, [hasToken, router]);
 
   return (
     <AppTheme>
@@ -81,9 +124,27 @@ export default function PaymentSuccessPage() {
           <Typography variant="body1" color="text.secondary">
             {t('paymentSuccess.description')}
           </Typography>
-          <Button variant="contained" size="large" href="/login" sx={{ mt: 2 }}>
-            {t('paymentSuccess.cta')}
-          </Button>
+
+          {hasToken === null ? null : hasToken ? (
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, mt: 2 }}>
+              {polling ? (
+                <>
+                  <CircularProgress size={24} />
+                  <Typography variant="body2" color="text.secondary">
+                    {t('paymentSuccess.checkingPayment')}
+                  </Typography>
+                </>
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  {t('paymentSuccess.paymentPending')}
+                </Typography>
+              )}
+            </Box>
+          ) : (
+            <Button variant="contained" size="large" href="/login" sx={{ mt: 2 }}>
+              {t('paymentSuccess.cta')}
+            </Button>
+          )}
         </Card>
       </PageContainer>
     </AppTheme>
