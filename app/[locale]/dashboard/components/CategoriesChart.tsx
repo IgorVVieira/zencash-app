@@ -90,13 +90,13 @@ export default function CategoriesChart({
   const t = useTranslations('dashboard');
   const locale = useLocale();
 
-  const grandTotal = data.reduce((s, c) => s + Math.abs(c.total), 0);
-
   const pieData = data.map((c, i) => ({
     label: c.name,
-    value: Math.abs(c.total),
+    value: Math.abs(c.total) / 100,
     color: c.color || fallbackColors[i % fallbackColors.length],
   }));
+
+  const grandTotal = pieData.reduce((s, c) => s + c.value, 0);
 
   const categories = data.map((c, i) => ({
     name: c.name,
@@ -141,7 +141,7 @@ export default function CategoriesChart({
                   primaryText={grandTotal.toLocaleString(locale === 'pt-br' ? 'pt-BR' : 'en-US', {
                     style: 'currency',
                     currency: 'BRL',
-                    maximumFractionDigits: 0,
+                    maximumFractionDigits: 2,
                   })}
                   secondaryText={t('total')}
                 />

@@ -40,7 +40,7 @@ const columns: GridColDef[] = [
     flex: 1,
     minWidth: 120,
     valueFormatter: (value: number) =>
-      value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
+      (value / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 2 }),
   },
   {
     field: 'method',

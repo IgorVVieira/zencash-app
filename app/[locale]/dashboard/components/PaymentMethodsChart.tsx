@@ -41,7 +41,7 @@ export default function PaymentMethodsChart({
   };
 
   const sorted = [...data]
-    .map((item) => ({ method: item.method, total: Math.abs(item.total) }))
+    .map((item) => ({ method: item.method, total: Math.abs(item.total) / 100 }))
     .sort((a, b) => b.total - a.total);
 
   const grandTotal = sorted.reduce((s, c) => s + c.total, 0);

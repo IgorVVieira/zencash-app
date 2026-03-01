@@ -129,7 +129,7 @@ export default function TransactionsPage() {
         width: 140,
         type: 'number',
         valueFormatter: (value: number) =>
-          value.toLocaleString(locale === 'pt-br' ? 'pt-BR' : 'en-US', { style: 'currency', currency: 'BRL' }),
+          (value / 100).toLocaleString(locale === 'pt-br' ? 'pt-BR' : 'en-US', { style: 'currency', currency: 'BRL', maximumFractionDigits: 2 }),
       },
       {
         field: 'method',

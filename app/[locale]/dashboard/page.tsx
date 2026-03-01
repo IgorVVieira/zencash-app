@@ -24,6 +24,7 @@ import MonthYearPicker from '../../components/MonthYearPicker';
 import OnboardingTour from '../../components/OnboardingTour';
 import { useSubscription } from '../../lib/subscription-context';
 import { useTranslations, useLocale } from 'next-intl';
+import { formatCurrency } from '../../lib/currency';
 
 function getDaysInMonth(month: number, year: number) {
   const date = new Date(year, month, 0);
@@ -40,21 +41,6 @@ export default function DashboardPage() {
   const locale = useLocale();
   const { hasSubscription } = useSubscription();
 
-  function formatCurrency(value: number): string {
-    const loc = locale === 'pt-br' ? 'pt-BR' : 'en-US';
-    if (Math.abs(value) >= 1000) {
-      return (
-        (value / 1000).toLocaleString(loc, {
-          maximumFractionDigits: 1,
-        }) + 'k'
-      );
-    }
-    return value.toLocaleString(loc, {
-      style: 'currency',
-      currency: 'BRL',
-      maximumFractionDigits: 0,
-    });
-  }
   const now = new Date();
   const [currentMonth, setCurrentMonth] = React.useState(now.getMonth() + 1);
   const [currentYear, setCurrentYear] = React.useState(now.getFullYear());
@@ -215,7 +201,7 @@ export default function DashboardPage() {
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
           <StatCard
             title={t('cashIn')}
-            value={formatCurrency(totalCashIn)}
+            value={formatCurrency(totalCashIn, locale)}
             interval={intervalLabel}
             trend={cashInTrend.trend}
             trendLabel={cashInTrend.label}
@@ -226,7 +212,7 @@ export default function DashboardPage() {
         <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
           <StatCard
             title={t('cashOut')}
-            value={formatCurrency(totalCashOut)}
+            value={formatCurrency(totalCashOut, locale)}
             interval={intervalLabel}
             trend={cashOutTrend.trend === 'up' ? 'down' : cashOutTrend.trend === 'down' ? 'up' : 'neutral'}
             trendLabel={cashOutTrend.label}
@@ -237,7 +223,7 @@ export default function DashboardPage() {
         <Grid size={{ xs: 12, sm: 12, lg: 4 }}>
           <StatCard
             title={t('balance')}
-            value={formatCurrency(balance)}
+            value={formatCurrency(balance, locale)}
             interval={intervalLabel}
             trend={balanceTrend.trend}
             trendLabel={balanceTrend.label}

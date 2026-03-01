@@ -28,8 +28,8 @@ export default function LastSixMonthsChart({
     const date = new Date(m.year, m.month - 1);
     return date.toLocaleDateString(locale === 'pt-br' ? 'pt-BR' : 'en-US', { month: 'short' });
   });
-  const cashInData = data.map((m) => m.totalCashIn);
-  const cashOutData = data.map((m) => Math.abs(m.totalCashOut));
+  const cashInData = data.map((m) => m.totalCashIn / 100);
+  const cashOutData = data.map((m) => Math.abs(m.totalCashOut) / 100);
 
   const totalIn = cashInData.reduce((a, b) => a + b, 0);
   const totalOut = cashOutData.reduce((a, b) => a + b, 0);
