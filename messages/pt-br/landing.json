@@ -11,7 +11,12 @@
     "cta": "Começar agora",
     "ctaSecondary": "Já tenho conta",
     "badge": "✨ Com Inteligência Artificial",
-    "noCreditCard": "Pagamento via PIX · Cancele quando quiser"
+    "noCreditCard": "Pagamento via PIX · Cancele quando quiser",
+    "bullets": [
+      "Importe OFX de qualquer banco",
+      "IA categoriza automaticamente",
+      "Veja para onde vai cada centavo"
+    ]
   },
   "sections": {
     "dashboard": {
@@ -64,6 +69,7 @@
     "subtitle": "Escolha o plano ideal para você.",
     "recommended": "Recomendado",
     "perMonth": "/mês",
+    "singlePlan": "Plano único · Acesso completo",
     "pro": {
       "title": "Pro",
       "price": "15",
@@ -76,7 +82,12 @@
         "Categorização automática por IA na importação"
       ],
       "aiHighlight": "Economize tempo com IA",
-      "cta": "Assinar Pro"
+      "cta": "Assinar Pro",
+      "whyItWorks": [
+        "Economize horas de planilha todo mês",
+        "Sem débito automático, renove quando quiser",
+        "Categorização por IA inclusa no plano"
+      ]
     },
     "guarantee": "Acesso por 1 mês · Renove via PIX quando quiser"
   },

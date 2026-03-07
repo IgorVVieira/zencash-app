@@ -9,6 +9,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 import { areaElementClasses } from '@mui/x-charts/LineChart';
+import { motion } from 'framer-motion';
 
 export interface StatCardProps {
   title: string;
@@ -18,6 +19,7 @@ export interface StatCardProps {
   trendLabel: string;
   data: number[];
   xLabels: string[];
+  motionIndex?: number;
 }
 
 function AreaGradient({ color, id }: { color: string; id: string }) {
@@ -39,6 +41,7 @@ export default function StatCard({
   trendLabel,
   data,
   xLabels,
+  motionIndex = 0,
 }: StatCardProps) {
   const theme = useTheme();
 
@@ -68,6 +71,12 @@ export default function StatCard({
   const gradientId = `area-gradient-${title.replace(/\s/g, '-')}`;
 
   return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: motionIndex * 0.08, duration: 0.4, ease: 'easeOut' }}
+      style={{ height: '100%' }}
+    >
     <Card variant="outlined" sx={{ height: '100%', flexGrow: 1 }}>
       <CardContent>
         <Typography component="h2" variant="subtitle2" gutterBottom>
@@ -116,5 +125,6 @@ export default function StatCard({
         </Stack>
       </CardContent>
     </Card>
+    </motion.div>
   );
 }

@@ -23,6 +23,11 @@ const AppBar = styled(MuiAppBar)(({ theme }) => ({
   borderColor: (theme.vars ?? theme).palette.divider,
   boxShadow: 'none',
   zIndex: theme.zIndex.drawer + 1,
+  backdropFilter: 'blur(8px)',
+  backgroundColor: 'rgba(255, 255, 255, 0.85)',
+  ...theme.applyStyles('dark', {
+    backgroundColor: 'rgba(9, 10, 15, 0.85)',
+  }),
 }));
 
 export interface DashboardHeaderProps {
@@ -78,13 +83,13 @@ export default function DashboardHeader({
                 variant="h6"
                 sx={(theme) => ({
                   color: (theme.vars ?? theme).palette.primary.main,
-                  fontWeight: '700',
+                  fontWeight: 800,
                   ml: 1,
                   whiteSpace: 'nowrap',
                   lineHeight: 1,
                 })}
               >
-                <CoinLogo size={22} />{' '}ZenCash
+                <CoinLogo size={28} />{' '}ZenCash
               </Typography>
             </NextLink>
           </Stack>

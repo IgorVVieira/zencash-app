@@ -183,9 +183,13 @@ export default function DashboardSidebar({
                 mb: 1,
                 p: 1.5,
                 borderRadius: 1,
-                bgcolor: 'warning.50',
+                bgcolor: (theme) =>
+                  theme.palette.mode === 'dark'
+                    ? 'rgba(255, 152, 0, 0.08)'
+                    : 'rgba(255, 152, 0, 0.06)',
                 border: '1px solid',
                 borderColor: 'warning.main',
+                transition: 'all 0.15s ease',
               }}
               spacing={1}
             >

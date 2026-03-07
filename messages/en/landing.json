@@ -11,7 +11,12 @@
     "cta": "Get started",
     "ctaSecondary": "I already have an account",
     "badge": "✨ Powered by AI",
-    "noCreditCard": "Pay via PIX · Cancel anytime"
+    "noCreditCard": "Pay via PIX · Cancel anytime",
+    "bullets": [
+      "Import OFX from any bank",
+      "AI categorizes automatically",
+      "See where every penny goes"
+    ]
   },
   "sections": {
     "dashboard": {
@@ -64,6 +69,7 @@
     "subtitle": "Choose the right plan for you.",
     "recommended": "Recommended",
     "perMonth": "/mo",
+    "singlePlan": "Single plan · Full access",
     "pro": {
       "title": "Pro",
       "price": "15",
@@ -76,7 +82,12 @@
         "AI auto-categorization on import"
       ],
       "aiHighlight": "Save time with AI",
-      "cta": "Subscribe Pro"
+      "cta": "Subscribe Pro",
+      "whyItWorks": [
+        "Save hours of spreadsheets every month",
+        "No automatic debit, renew whenever you want",
+        "AI categorization included in the plan"
+      ]
     },
     "guarantee": "1-month access · Renew via PIX whenever you want"
   },
