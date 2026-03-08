@@ -74,7 +74,7 @@ const fadeUp = {
   visible: (delay = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: 'easeOut', delay },
+    transition: { duration: 0.5, ease: 'easeOut' as const, delay },
   }),
 };
 
@@ -83,7 +83,7 @@ const fadeUpSection = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.55, ease: 'easeOut' },
+    transition: { duration: 0.55, ease: 'easeOut' as const },
   },
 };
 
@@ -92,7 +92,7 @@ const scaleUp = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.5, ease: 'easeOut' },
+    transition: { duration: 0.5, ease: 'easeOut' as const },
   },
 };
 
