@@ -26,7 +26,7 @@ const AppBar = styled(MuiAppBar)(({ theme }) => ({
   backdropFilter: 'blur(8px)',
   backgroundColor: 'rgba(255, 255, 255, 0.85)',
   ...theme.applyStyles('dark', {
-    backgroundColor: 'rgba(9, 10, 15, 0.85)',
+    backgroundColor: 'rgba(24, 28, 38, 0.85)',
   }),
 }));
 

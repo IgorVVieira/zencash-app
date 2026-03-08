@@ -176,10 +176,10 @@ export const colorSchemes = {
       grey: {
         ...gray,
       },
-      divider: alpha(gray[700], 0.8),
+      divider: alpha(gray[600], 0.5),
       background: {
-        default: gray[900],
-        paper: 'hsl(220, 30%, 7%)',
+        default: 'hsl(220, 16%, 11%)',
+        paper: 'hsl(220, 14%, 16%)',
       },
       text: {
         primary: 'hsl(0, 0%, 100%)',
