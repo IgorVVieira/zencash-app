@@ -13,6 +13,19 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  // eslint-plugin-react bundled in eslint-config-next calls context.getFilename()
+  // which was removed in ESLint 10. Setting an explicit version bypasses auto-detection.
+  {
+    settings: {
+      react: {
+        version: "19",
+      },
+    },
+    rules: {
+      // Flags valid React patterns (localStorage hydration, form init from props, etc.)
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

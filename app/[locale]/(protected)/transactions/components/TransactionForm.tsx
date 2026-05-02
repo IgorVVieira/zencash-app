@@ -42,7 +42,9 @@ export default function TransactionForm({
   const t = useTranslations('transactions');
   const tc = useTranslations('common');
   const [description, setDescription] = React.useState(transaction.description);
-  const [categoryId, setCategoryId] = React.useState(transaction.categoryId ?? '');
+  const [categoryId, setCategoryId] = React.useState(
+    transaction.categoryId ?? transaction.category?.id ?? '',
+  );
   const [categories, setCategories] = React.useState<Category[]>([]);
 
   const [loading, setLoading] = React.useState(false);

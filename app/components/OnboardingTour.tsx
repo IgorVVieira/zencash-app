@@ -273,8 +273,8 @@ export function resetTour(page?: TourPage) {
   const storageKey = getTourStorageKey();
   if (page) {
     const completedTours = JSON.parse(localStorage.getItem(storageKey) || '{}');
-    const { [page]: _, ...rest } = completedTours;
-    localStorage.setItem(storageKey, JSON.stringify(rest));
+    delete completedTours[page];
+    localStorage.setItem(storageKey, JSON.stringify(completedTours));
   } else {
     localStorage.removeItem(storageKey);
   }

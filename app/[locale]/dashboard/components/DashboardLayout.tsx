@@ -42,13 +42,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     [setIsNavigationExpanded],
   );
 
-  const layoutRef = React.useRef<HTMLDivElement>(null);
+  const [container, setContainer] = React.useState<HTMLDivElement | null>(null);
 
   return (
     <AppTheme>
       <CssBaseline enableColorScheme />
       <Box
-        ref={layoutRef}
+        ref={setContainer}
         sx={{
           position: 'relative',
           display: 'flex',
@@ -64,7 +64,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <DashboardSidebar
           expanded={isNavigationExpanded}
           setExpanded={setIsNavigationExpanded}
-          container={layoutRef?.current ?? undefined}
+          container={container ?? undefined}
         />
         <Box
           sx={{

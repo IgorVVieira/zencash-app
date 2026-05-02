@@ -58,7 +58,7 @@ export default function DashboardPage() {
   const [categoriesCashIn, setCategoriesCashIn] = React.useState<CategorySummary[]>([]);
   const [lastSixMonths, setLastSixMonths] = React.useState<MonthSummary[]>([]);
 
-  const [loadingMonth, setLoadingMonth] = React.useState(true);
+  const [, setLoadingMonth] = React.useState(true);
   const [loadingPayments, setLoadingPayments] = React.useState(true);
   const [loadingCatOut, setLoadingCatOut] = React.useState(true);
   const [loadingCatIn, setLoadingCatIn] = React.useState(true);

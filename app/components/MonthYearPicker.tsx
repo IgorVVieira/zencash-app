@@ -9,11 +9,7 @@ import CalendarTodayRoundedIcon from '@mui/icons-material/CalendarTodayRounded';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker, type DatePickerFieldProps } from '@mui/x-date-pickers/DatePicker';
-import {
-  usePickerContext,
-  useSplitFieldProps,
-  useParsedFormat,
-} from '@mui/x-date-pickers';
+import { usePickerContext, useParsedFormat } from '@mui/x-date-pickers';
 
 dayjs.locale('pt-br');
 

@@ -52,13 +52,6 @@ export default function TransactionsPage() {
   );
   const [loading, setLoading] = React.useState(true);
 
-  const methodLabels: Record<string, string> = {
-    PIX: tc('methods.PIX'),
-    DEBIT: tc('methods.DEBIT'),
-    TRANSFER: tc('methods.TRANSFER'),
-    CARD_PAYMENT: tc('methods.CARD_PAYMENT'),
-    CASH_BACK: tc('methods.CASH_BACK'),
-  };
 
   const loadTransactions = React.useCallback(async (signal?: AbortSignal) => {
     setLoading(true);
@@ -98,7 +91,15 @@ export default function TransactionsPage() {
 
 
   const columns = React.useMemo<GridColDef[]>(
-    () => [
+    () => {
+      const methodLabels: Record<string, string> = {
+        PIX: tc('methods.PIX'),
+        DEBIT: tc('methods.DEBIT'),
+        TRANSFER: tc('methods.TRANSFER'),
+        CARD_PAYMENT: tc('methods.CARD_PAYMENT'),
+        CASH_BACK: tc('methods.CASH_BACK'),
+      };
+      return [
       {
         field: 'description',
         headerName: t('description'),
@@ -178,8 +179,9 @@ export default function TransactionsPage() {
             },
           ]
         : []),
-    ],
-    [handleRowEdit, t, tc, locale, methodLabels, hasSubscription],
+    ];
+    },
+    [handleRowEdit, t, tc, locale, hasSubscription],
   );
 
   const rows = React.useMemo(

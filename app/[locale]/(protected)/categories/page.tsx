@@ -47,11 +47,6 @@ export default function CategoriesPage() {
   const [deletingCategory, setDeletingCategory] = React.useState<Category | null>(null);
   const [deleteLoading, setDeleteLoading] = React.useState(false);
 
-  const typeLabels: Record<string, string> = {
-    CASH_IN: tc('types.cashIn'),
-    CASH_OUT: tc('types.cashOut'),
-  };
-
   const loadCategories = React.useCallback(async (signal?: AbortSignal) => {
     setLoading(true);
     try {
@@ -117,7 +112,12 @@ export default function CategoriesPage() {
   };
 
   const columns = React.useMemo<GridColDef[]>(
-    () => [
+    () => {
+      const typeLabels: Record<string, string> = {
+        CASH_IN: tc('types.cashIn'),
+        CASH_OUT: tc('types.cashOut'),
+      };
+      return [
       {
         field: 'color',
         headerName: t('color'),
@@ -192,8 +192,9 @@ export default function CategoriesPage() {
             },
           ]
         : []),
-    ],
-    [handleRowEdit, handleRowDelete, t, tc, typeLabels, hasSubscription],
+    ];
+    },
+    [handleRowEdit, handleRowDelete, t, tc, hasSubscription],
   );
 
   return (

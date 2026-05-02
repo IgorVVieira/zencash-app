@@ -64,7 +64,7 @@ export default function DashboardHeader({
         </Tooltip>
       );
     },
-    [handleMenuOpen],
+    [handleMenuOpen, t],
   );
 
   return (

@@ -12,28 +12,28 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^7.3.7",
-    "@mui/material": "^7.3.7",
+    "@mui/material": "^7.0.0",
     "@mui/x-charts": "^8.26.0",
     "@mui/x-data-grid": "^8.26.0",
     "@mui/x-date-pickers": "^8.26.0",
-    "axios": "^1.13.5",
+    "axios": "^1.16.0",
     "dayjs": "^1.11.19",
     "driver.js": "^1.4.0",
-    "framer-motion": "^12.35.0",
-    "next": "16.1.6",
+    "framer-motion": "^12.38.0",
+    "next": "^16.2.4",
     "next-intl": "^4.8.1",
-    "react": "19.2.3",
+    "react": "^19.2.5",
     "react-colorful": "^5.6.1",
-    "react-dom": "19.2.3"
+    "react-dom": "^19.2.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^25.6.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "eslint": "^10.3.0",
+    "eslint-config-next": "16.2.4",
+    "tailwindcss": "^4.2.4",
+    "typescript": "^6.0.3"
   }
 }
