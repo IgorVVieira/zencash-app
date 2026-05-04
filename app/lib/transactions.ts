@@ -59,8 +59,8 @@ export async function updateTransaction(
 export async function importOFX(file: File, useLlm?: boolean): Promise<void> {
   const formData = new FormData();
   formData.append('statement', file);
-  if (useLlm !== undefined) {
-    formData.append('useLlm', String(useLlm));
+  if (useLlm) {
+    formData.append('useLlm', 'true');
   }
   await api.post('/api/transactions/import', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
