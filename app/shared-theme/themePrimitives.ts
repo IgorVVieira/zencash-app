@@ -30,16 +30,16 @@ declare module '@mui/material/styles' {
 const defaultTheme = createTheme();
 
 export const brand = {
-  50: 'hsl(210, 100%, 95%)',
-  100: 'hsl(210, 100%, 92%)',
-  200: 'hsl(210, 100%, 80%)',
-  300: 'hsl(210, 100%, 65%)',
-  400: 'hsl(210, 98%, 48%)',
-  500: 'hsl(210, 98%, 42%)',
-  600: 'hsl(210, 98%, 55%)',
-  700: 'hsl(210, 100%, 35%)',
-  800: 'hsl(210, 100%, 16%)',
-  900: 'hsl(210, 100%, 21%)',
+  50: 'hsl(158, 60%, 96%)',
+  100: 'hsl(158, 55%, 90%)',
+  200: 'hsl(160, 52%, 78%)',
+  300: 'hsl(162, 55%, 62%)',
+  400: 'hsl(164, 62%, 44%)',
+  500: 'hsl(166, 70%, 35%)',
+  600: 'hsl(168, 75%, 28%)',
+  700: 'hsl(170, 80%, 20%)',
+  800: 'hsl(172, 85%, 12%)',
+  900: 'hsl(174, 90%, 7%)',
 };
 
 export const gray = {
@@ -101,7 +101,7 @@ export const colorSchemes = {
         light: brand[200],
         main: brand[400],
         dark: brand[700],
-        contrastText: brand[50],
+        contrastText: '#ffffff',
       },
       info: {
         light: brand[100],
@@ -130,7 +130,7 @@ export const colorSchemes = {
       divider: alpha(gray[300], 0.7),
       background: {
         default: 'hsl(0, 0%, 99%)',
-        paper: 'hsl(220, 35%, 97%)',
+        paper: 'hsl(158, 20%, 97%)',
       },
       text: {
         primary: gray[800],
@@ -148,7 +148,7 @@ export const colorSchemes = {
   dark: {
     palette: {
       primary: {
-        contrastText: brand[50],
+        contrastText: '#ffffff',
         light: brand[300],
         main: brand[400],
         dark: brand[700],
@@ -179,8 +179,8 @@ export const colorSchemes = {
       },
       divider: alpha(gray[600], 0.5),
       background: {
-        default: 'hsl(220, 16%, 11%)',
-        paper: 'hsl(220, 14%, 16%)',
+        default: 'hsl(222, 20%, 8%)',
+        paper: 'hsl(220, 18%, 12%)',
       },
       text: {
         primary: 'hsl(0, 0%, 100%)',
@@ -191,7 +191,7 @@ export const colorSchemes = {
         selected: alpha(gray[600], 0.3),
       },
       baseShadow:
-        'hsla(220, 30%, 5%, 0.7) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.8) 0px 8px 16px -5px',
+        'hsla(166, 40%, 3%, 0.75) 0px 4px 16px 0px, hsla(168, 35%, 5%, 0.85) 0px 8px 16px -5px',
     },
   },
 };
@@ -200,38 +200,47 @@ export const typography = {
   fontFamily: "'Plus Jakarta Sans', var(--font-plus-jakarta-sans), sans-serif",
   h1: {
     fontSize: defaultTheme.typography.pxToRem(48),
-    fontWeight: 600,
-    lineHeight: 1.2,
-    letterSpacing: -0.5,
+    fontWeight: 800,
+    lineHeight: 1.15,
+    letterSpacing: -1,
+    fontFamily: "'Outfit', var(--font-outfit), sans-serif",
   },
   h2: {
     fontSize: defaultTheme.typography.pxToRem(36),
-    fontWeight: 600,
-    lineHeight: 1.2,
+    fontWeight: 800,
+    lineHeight: 1.15,
+    letterSpacing: -0.5,
+    fontFamily: "'Outfit', var(--font-outfit), sans-serif",
   },
   h3: {
     fontSize: defaultTheme.typography.pxToRem(30),
+    fontWeight: 700,
     lineHeight: 1.2,
+    fontFamily: "'Outfit', var(--font-outfit), sans-serif",
   },
   h4: {
     fontSize: defaultTheme.typography.pxToRem(24),
-    fontWeight: 600,
-    lineHeight: 1.5,
+    fontWeight: 700,
+    lineHeight: 1.3,
+    letterSpacing: -0.3,
+    fontFamily: "'Outfit', var(--font-outfit), sans-serif",
   },
   h5: {
     fontSize: defaultTheme.typography.pxToRem(20),
-    fontWeight: 600,
+    fontWeight: 700,
+    fontFamily: "'Outfit', var(--font-outfit), sans-serif",
   },
   h6: {
     fontSize: defaultTheme.typography.pxToRem(18),
     fontWeight: 600,
+    fontFamily: "'Outfit', var(--font-outfit), sans-serif",
   },
   subtitle1: {
     fontSize: defaultTheme.typography.pxToRem(18),
   },
   subtitle2: {
     fontSize: defaultTheme.typography.pxToRem(14),
-    fontWeight: 500,
+    fontWeight: 600,
   },
   body1: {
     fontSize: defaultTheme.typography.pxToRem(14),
@@ -243,11 +252,12 @@ export const typography = {
   caption: {
     fontSize: defaultTheme.typography.pxToRem(12),
     fontWeight: 400,
+    letterSpacing: 0.2,
   },
 };
 
 export const shape = {
-  borderRadius: 8,
+  borderRadius: 10,
 };
 
 // @ts-expect-error -- defaultTheme.shadows has index signature mismatch with Shadows tuple type

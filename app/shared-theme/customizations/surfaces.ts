@@ -46,21 +46,34 @@ export const surfacesCustomizations: Components<Theme> = {
       root: ({ theme }) => ({
         padding: 16,
         gap: 16,
-        transition: 'all 100ms ease',
-        backgroundColor: gray[50],
+        transition: 'box-shadow 200ms ease, transform 200ms ease',
+        backgroundColor: 'hsl(0, 0%, 100%)',
+        background: 'linear-gradient(145deg, hsl(0, 0%, 100%) 0%, hsl(220, 25%, 98%) 100%)',
         borderRadius: (theme.vars || theme).shape.borderRadius,
-        border: `1px solid ${(theme.vars || theme).palette.divider}`,
-        boxShadow: 'none',
-        ...theme.applyStyles('dark', { backgroundColor: gray[800] }),
+        border: '1px solid hsl(220, 20%, 92%)',
+        boxShadow: '0 1px 3px hsla(220, 30%, 10%, 0.06), 0 4px 12px hsla(220, 30%, 10%, 0.04)',
+        '&:hover': {
+          boxShadow: '0 4px 16px hsla(220, 30%, 10%, 0.10), 0 1px 4px hsla(220, 30%, 10%, 0.06)',
+        },
+        ...theme.applyStyles('dark', {
+          backgroundColor: 'hsl(220, 20%, 13%)',
+          background: 'linear-gradient(145deg, hsl(220, 20%, 14%) 0%, hsl(220, 22%, 11%) 100%)',
+          border: '1px solid hsl(220, 20%, 20%)',
+          boxShadow: '0 1px 3px hsla(220, 50%, 2%, 0.4), 0 4px 16px hsla(220, 50%, 2%, 0.25)',
+          '&:hover': {
+            boxShadow: '0 4px 24px hsla(220, 50%, 2%, 0.5), 0 1px 4px hsla(220, 50%, 2%, 0.3)',
+          },
+        }),
         variants: [
           {
             props: { variant: 'outlined' },
             style: {
-              border: `1px solid ${(theme.vars || theme).palette.divider}`,
+              border: '1px solid hsl(220, 20%, 90%)',
               boxShadow: 'none',
               background: 'hsl(0, 0%, 100%)',
               ...theme.applyStyles('dark', {
-                background: alpha(gray[900], 0.4),
+                background: 'hsl(220, 20%, 12%)',
+                border: '1px solid hsl(220, 20%, 19%)',
               }),
             },
           },

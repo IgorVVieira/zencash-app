@@ -38,14 +38,17 @@ const Card = styled(MuiCard)(({ theme }) => ({
   padding: theme.spacing(4),
   gap: theme.spacing(2),
   margin: 'auto',
+  border: '1px solid hsl(220, 20%, 90%)',
   boxShadow:
-    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
+    'hsla(220, 30%, 5%, 0.06) 0px 8px 24px 0px, hsla(220, 25%, 10%, 0.04) 0px 2px 8px 0px',
   [theme.breakpoints.up('sm')]: {
     width: '450px',
   },
   ...theme.applyStyles('dark', {
+    backgroundColor: 'hsl(220, 20%, 12%)',
+    border: '1px solid hsl(220, 20%, 19%)',
     boxShadow:
-      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
+      'hsla(222, 50%, 3%, 0.6) 0px 8px 32px 0px, hsla(220, 40%, 5%, 0.4) 0px 2px 8px 0px',
   }),
 }));
 
@@ -62,11 +65,11 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
     zIndex: -1,
     inset: 0,
     backgroundImage:
-      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+      'radial-gradient(ellipse at 60% 40%, hsl(158, 55%, 94%) 0%, hsl(0, 0%, 100%) 65%)',
     backgroundRepeat: 'no-repeat',
     ...theme.applyStyles('dark', {
       backgroundImage:
-        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+        'radial-gradient(ellipse at 40% 30%, hsla(164, 70%, 10%, 0.5) 0%, hsl(222, 20%, 8%) 70%)',
     }),
   },
 }));
@@ -220,14 +223,14 @@ export default function RegisterPage() {
           <Typography
             component="h1"
             variant="h4"
-            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', fontWeight: 700 }}
+            sx={{ width: '100%', fontSize: 'clamp(1.8rem, 8vw, 2.15rem)', fontWeight: 800, fontFamily: 'var(--font-outfit), sans-serif', color: 'primary.main', letterSpacing: -0.5 }}
           >
             <CoinLogo size={28} /> ZenCash
           </Typography>
           <Typography
             component="h2"
             variant="h4"
-            sx={{ width: '100%', fontSize: 'clamp(1.5rem, 8vw, 1.75rem)' }}
+            sx={{ width: '100%', fontSize: 'clamp(1.3rem, 6vw, 1.6rem)', fontFamily: 'var(--font-outfit), sans-serif', fontWeight: 700, letterSpacing: -0.3 }}
           >
             {t('auth.signUp')}
           </Typography>

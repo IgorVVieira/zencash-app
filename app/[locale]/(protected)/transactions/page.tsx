@@ -128,10 +128,25 @@ export default function TransactionsPage() {
         headerName: t('amount'),
         headerAlign: 'right',
         align: 'right',
-        width: 140,
+        width: 150,
         type: 'number',
         valueFormatter: (value: number) =>
           (value / 100).toLocaleString(locale === 'pt-br' ? 'pt-BR' : 'en-US', { style: 'currency', currency: 'BRL', maximumFractionDigits: 2 }),
+        renderCell: (params) => (
+          <Box
+            sx={{
+              fontFamily: 'var(--font-dm-mono), monospace',
+              fontSize: '0.82rem',
+              fontWeight: 500,
+              color: params.row.type === 'CASH_IN' ? 'success.main' : 'error.main',
+              width: '100%',
+              textAlign: 'right',
+              pr: 1,
+            }}
+          >
+            {params.formattedValue}
+          </Box>
+        ),
       },
       {
         field: 'method',
@@ -266,8 +281,23 @@ export default function TransactionsPage() {
                     {
                       outline: 'none',
                     },
+                  [`& .${gridClasses.columnHeader}`]: {
+                    fontWeight: 700,
+                    fontSize: '0.72rem',
+                    letterSpacing: 0.8,
+                    textTransform: 'uppercase',
+                    color: 'text.secondary',
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'dark'
+                        ? 'hsl(220, 22%, 10%)'
+                        : 'hsl(220, 25%, 97%)',
+                  },
                   [`& .${gridClasses.row}:hover`]: {
                     cursor: 'pointer',
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'dark'
+                        ? 'rgba(100, 200, 160, 0.05)'
+                        : 'rgba(0, 160, 100, 0.04)',
                   },
                 }}
                 slotProps={{

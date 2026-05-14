@@ -114,7 +114,29 @@ export default function DashboardSidebarPageItem({
         <ListItemButton
           selected={selected}
           disabled={disabled}
-          sx={{ height: mini ? 50 : 'auto' }}
+          sx={{
+            height: mini ? 50 : 'auto',
+            position: 'relative',
+            borderRadius: 1,
+            '&.Mui-selected': {
+              backgroundColor: (theme) => `rgba(${theme.palette.mode === 'dark' ? '74, 222, 128' : '16, 185, 129'}, 0.10)`,
+              color: 'primary.main',
+              '& .MuiListItemIcon-root': { color: 'primary.main' },
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                left: -8,
+                top: '20%',
+                height: '60%',
+                width: 3,
+                borderRadius: '0 3px 3px 0',
+                backgroundColor: 'primary.main',
+              },
+            },
+            '&.Mui-selected:hover': {
+              backgroundColor: (theme) => `rgba(${theme.palette.mode === 'dark' ? '74, 222, 128' : '16, 185, 129'}, 0.14)`,
+            },
+          }}
           {...(nestedNavigation && !mini
             ? { onClick: handleClick }
             : {})}

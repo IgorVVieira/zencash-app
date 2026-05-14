@@ -158,17 +158,20 @@ export default function ProfilePage() {
                   sx={{
                     width: 80,
                     height: 80,
-                    fontSize: 32,
-                    background: 'linear-gradient(135deg, var(--mui-palette-primary-main), var(--mui-palette-primary-dark))',
+                    fontSize: '1.8rem',
+                    fontWeight: 700,
+                    fontFamily: 'var(--font-outfit), sans-serif',
+                    bgcolor: 'primary.main',
+                    color: 'white',
                   }}
                 >
                   {initials}
                 </Avatar>
                 <Box sx={{ textAlign: 'center' }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                  <Typography variant="h6" sx={{ fontWeight: 700, fontFamily: 'var(--font-outfit), sans-serif' }}>
                     {user.name}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', fontFamily: 'var(--font-dm-mono), monospace', fontSize: '0.8rem' }}>
                     {user.email}
                   </Typography>
                 </Box>
@@ -362,7 +365,7 @@ function InfoRow({
           {label}
         </Typography>
       </Box>
-      <Typography variant="body2">{value}</Typography>
+      <Typography variant="body2" sx={{ fontFamily: 'var(--font-dm-mono), monospace', fontSize: '0.82rem' }}>{value}</Typography>
     </Stack>
   );
 }

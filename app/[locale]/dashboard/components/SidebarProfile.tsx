@@ -74,7 +74,7 @@ export default function SidebarProfile({ mini }: { mini?: boolean }) {
       <>
         <Stack sx={{ alignItems: 'center', py: 1.5 }}>
           <IconButton size="small" onClick={handleClick}>
-            <Avatar sx={{ width: 32, height: 32, fontSize: 14 }}>{initials}</Avatar>
+            <Avatar sx={{ width: 32, height: 32, fontSize: 13, fontWeight: 700, fontFamily: 'var(--font-outfit)', bgcolor: 'primary.main', color: 'white' }}>{initials}</Avatar>
           </IconButton>
         </Stack>
         <Menu
@@ -131,14 +131,19 @@ export default function SidebarProfile({ mini }: { mini?: boolean }) {
       <Stack
         direction="row"
         sx={{
-          p: 2,
+          p: 1.5,
           gap: 1,
           alignItems: 'center',
           borderTop: '1px solid',
           borderColor: 'divider',
+          mx: 1,
+          mb: 1,
+          borderRadius: 2,
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'dark' ? 'hsl(220, 22%, 14%)' : 'hsl(220, 25%, 97%)',
         }}
       >
-        <Avatar sx={{ width: 36, height: 36, fontSize: 14 }}>{initials}</Avatar>
+        <Avatar sx={{ width: 36, height: 36, fontSize: 13, fontWeight: 700, fontFamily: 'var(--font-outfit)', bgcolor: 'primary.main', color: 'white' }}>{initials}</Avatar>
         <Box sx={{ mr: 'auto', overflow: 'hidden' }}>
           <Typography
             variant="body2"

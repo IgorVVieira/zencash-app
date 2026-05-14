@@ -72,14 +72,18 @@ export default function StatCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: motionIndex * 0.08, duration: 0.4, ease: 'easeOut' }}
+      initial={{ opacity: 0, y: 24, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay: motionIndex * 0.1, duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
       style={{ height: '100%' }}
     >
-    <Card variant="outlined" sx={{ height: '100%', flexGrow: 1 }}>
+    <Card sx={{ height: '100%', flexGrow: 1 }}>
       <CardContent>
-        <Typography component="h2" variant="subtitle2" gutterBottom>
+        <Typography
+          component="h2"
+          variant="caption"
+          sx={{ fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', fontSize: '0.68rem', mb: 1, display: 'block' }}
+        >
           {title}
         </Typography>
         <Stack
@@ -91,10 +95,10 @@ export default function StatCard({
               direction="row"
               sx={{ justifyContent: 'space-between', alignItems: 'center' }}
             >
-              <Typography variant="h4" component="p">
+              <Typography variant="h4" component="p" sx={{ fontFamily: 'var(--font-dm-mono), monospace', fontWeight: 500, letterSpacing: -0.5 }}>
                 {value}
               </Typography>
-              <Chip size="small" color={color} label={trendLabel} />
+              <Chip size="small" color={color} label={trendLabel} sx={{ fontFamily: 'var(--font-dm-mono)', fontWeight: 500, fontSize: '0.72rem' }} />
             </Stack>
             <Typography variant="caption" sx={{ color: 'text.secondary' }}>
               {interval}

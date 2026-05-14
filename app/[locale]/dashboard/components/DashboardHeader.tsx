@@ -23,10 +23,12 @@ const AppBar = styled(MuiAppBar)(({ theme }) => ({
   borderColor: (theme.vars ?? theme).palette.divider,
   boxShadow: 'none',
   zIndex: theme.zIndex.drawer + 1,
-  backdropFilter: 'blur(8px)',
-  backgroundColor: 'rgba(255, 255, 255, 0.85)',
+  backdropFilter: 'blur(12px) saturate(1.8)',
+  WebkitBackdropFilter: 'blur(12px) saturate(1.8)',
+  backgroundColor: 'rgba(255, 255, 255, 0.82)',
   ...theme.applyStyles('dark', {
-    backgroundColor: 'rgba(24, 28, 38, 0.85)',
+    backgroundColor: 'rgba(14, 17, 24, 0.87)',
+    borderColor: 'hsl(220, 20%, 16%)',
   }),
 }));
 
@@ -84,6 +86,8 @@ export default function DashboardHeader({
                 sx={(theme) => ({
                   color: (theme.vars ?? theme).palette.primary.main,
                   fontWeight: 800,
+                  fontFamily: 'var(--font-outfit), sans-serif',
+                  letterSpacing: -0.3,
                   ml: 1,
                   whiteSpace: 'nowrap',
                   lineHeight: 1,

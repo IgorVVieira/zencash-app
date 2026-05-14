@@ -139,6 +139,11 @@ export const navigationCustomizations: Components<Theme> = {
     styleOverrides: {
       paper: ({ theme }) => ({
         backgroundColor: (theme.vars || theme).palette.background.default,
+        backgroundImage: 'none',
+        ...theme.applyStyles('dark', {
+          backgroundColor: 'hsl(222, 22%, 9%)',
+          borderColor: 'hsl(220, 20%, 16%)',
+        }),
       }),
     },
   },

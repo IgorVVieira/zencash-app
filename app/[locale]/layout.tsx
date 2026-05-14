@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Plus_Jakarta_Sans, Outfit, DM_Mono } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
@@ -12,10 +12,25 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   variable: '--font-plus-jakarta-sans',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
+  display: 'swap',
+});
+
+const outfit = Outfit({
+  variable: '--font-outfit',
+  subsets: ['latin'],
+  weight: ['600', '700', '800'],
+  display: 'swap',
+});
+
+const dmMono = DM_Mono({
+  variable: '--font-dm-mono',
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  display: 'swap',
 });
 
 export const viewport: Viewport = {
-  themeColor: '#1976d2',
+  themeColor: 'hsl(164, 62%, 44%)',
 };
 
 export function generateStaticParams() {
@@ -97,7 +112,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${plusJakartaSans.variable} antialiased`}
+        className={`${plusJakartaSans.variable} ${outfit.variable} ${dmMono.variable} antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
           <LocaleLayoutClient>{children}</LocaleLayoutClient>

@@ -258,8 +258,23 @@ export default function CategoriesPage() {
                     {
                       outline: 'none',
                     },
+                  [`& .${gridClasses.columnHeader}`]: {
+                    fontWeight: 700,
+                    fontSize: '0.72rem',
+                    letterSpacing: 0.8,
+                    textTransform: 'uppercase',
+                    color: 'text.secondary',
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'dark'
+                        ? 'hsl(220, 22%, 10%)'
+                        : 'hsl(220, 25%, 97%)',
+                  },
                   [`& .${gridClasses.row}:hover`]: {
                     cursor: 'pointer',
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === 'dark'
+                        ? 'rgba(100, 200, 160, 0.05)'
+                        : 'rgba(0, 160, 100, 0.04)',
                   },
                 }}
                 slotProps={{
