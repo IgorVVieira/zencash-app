@@ -12,6 +12,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import EventRepeatIcon from '@mui/icons-material/EventRepeat';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -165,6 +166,13 @@ export default function DashboardSidebar({
               href="/transactions"
               selected={pathname.startsWith('/transactions')}
               tourId="transactions"
+            />
+            <DashboardSidebarPageItem
+              id="fixed-bills"
+              title={t('nav.fixedBills')}
+              icon={<EventRepeatIcon />}
+              href="/fixed-bills"
+              selected={pathname.startsWith('/fixed-bills')}
             />
             <DashboardSidebarPageItem
               id="import"
