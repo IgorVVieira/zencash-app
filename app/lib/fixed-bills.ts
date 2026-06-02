@@ -2,6 +2,7 @@ import api from './api';
 
 export type Recurrence = 'MONTHLY' | 'ANNUAL';
 export type OccurrenceStatus = 'PENDING' | 'PAID' | 'OVERDUE';
+export type SettableOccurrenceStatus = Exclude<OccurrenceStatus, 'OVERDUE'>;
 
 export interface FixedBill {
   id: string;
@@ -68,7 +69,7 @@ export interface UpdateFixedBillRequest {
 }
 
 export interface UpdateOccurrenceRequest {
-  status: 'PAID' | 'PENDING';
+  status: SettableOccurrenceStatus;
   paidAmount?: number;
 }
 
