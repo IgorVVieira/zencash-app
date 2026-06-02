@@ -52,6 +52,10 @@ export default function PaymentDialog({
 
   const handleConfirm = async () => {
     if (!occurrence) return;
+    if (mode === 'pay') {
+      const amount = parseFloat(paidAmount);
+      if (isNaN(amount) || amount <= 0) return;
+    }
     setLoading(true);
     try {
       let updated: FixedBillOccurrence;

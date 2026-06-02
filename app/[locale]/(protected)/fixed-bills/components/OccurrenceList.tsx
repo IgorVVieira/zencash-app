@@ -38,7 +38,7 @@ export default function OccurrenceList({ occurrences, onPay, onRevert }: Occurre
     );
   }
 
-  let cardIndex = 0;
+  const orderedOccurrences = GROUP_ORDER.flatMap((status) => grouped[status]);
 
   return (
     <Stack spacing={3}>
@@ -66,7 +66,7 @@ export default function OccurrenceList({ occurrences, onPay, onRevert }: Occurre
             </Stack>
             <Stack spacing={1}>
               {group.map((occ) => {
-                const idx = cardIndex++;
+                const idx = orderedOccurrences.indexOf(occ);
                 return (
                   <motion.div
                     key={occ.id}
