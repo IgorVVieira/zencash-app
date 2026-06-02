@@ -1,0 +1,102 @@
+{
+  "title": "Fixed Bills",
+  "tabBills": "My Bills",
+  "tabMonth": "This Month",
+  "addBill": "Add fixed bill",
+  "totalEstimated": "Total estimated per month",
+  "tooltipAnnual": "Monthly equivalent cost",
+  "emptyState": {
+    "title": "No fixed bills yet.",
+    "description": "Add your recurring bills to track your spending with more control.",
+    "cta": "Add fixed bill"
+  },
+  "emptyMonth": "No fixed bills this month",
+  "noOccurrences": "No bills registered",
+  "form": {
+    "createTitle": "New fixed bill",
+    "editTitle": "Edit fixed bill",
+    "name": "Bill name",
+    "namePlaceholder": "e.g. Rent, Netflix, Water",
+    "amount": "Estimated amount (R$)",
+    "category": "Category (optional)",
+    "categoryNone": "None",
+    "recurrence": "Recurrence",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "dueDay": "Day of month",
+    "dueMonth": "Due month",
+    "keywords": "Auto-match keywords",
+    "keywordsHint": "Use words that appear in your bank statement (OFX) description.",
+    "keywordsPlaceholder": "Add keyword",
+    "nameRequired": "Name is required",
+    "amountRequired": "Enter a positive amount",
+    "dueDayInvalid": "Invalid day (use 1–31)",
+    "keywordsRequired": "Add at least one keyword"
+  },
+  "recurrenceLabel": {
+    "MONTHLY": "/mo",
+    "ANNUAL": "/yr"
+  },
+  "dueLabel": {
+    "monthly": "Due every day {day}",
+    "annual": "Due in {month}, day {day}"
+  },
+  "months": {
+    "1": "January",
+    "2": "February",
+    "3": "March",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "August",
+    "9": "September",
+    "10": "October",
+    "11": "November",
+    "12": "December"
+  },
+  "summary": {
+    "estimated": "Estimated",
+    "paid": "Paid",
+    "pending": "Pending",
+    "progress": "{pct}% paid"
+  },
+  "groupHeaders": {
+    "OVERDUE": "Overdue",
+    "PENDING": "Pending",
+    "PAID": "Paid"
+  },
+  "occurrence": {
+    "dueDateLabel": "Due on {date}",
+    "overdueDateLabel": "Was due on {date}",
+    "paidDateLabel": "Paid on {date}",
+    "paidWithEstimated": "{paid} paid (est. {estimated})",
+    "autoMatched": "Auto-imported",
+    "payButton": "Pay",
+    "undoButton": "Undo"
+  },
+  "payment": {
+    "markTitle": "Mark as paid",
+    "revertTitle": "Undo payment",
+    "paidAmount": "Amount paid (R$)",
+    "revertConfirm": "Are you sure you want to mark \"{name}\" as unpaid in {period}?",
+    "confirm": "Confirm payment",
+    "undo": "Undo"
+  },
+  "delete": {
+    "title": "Delete fixed bill",
+    "confirm": "Delete \"{name}\"? Previous payment records will be kept, but future bills will be removed.",
+    "button": "Delete"
+  },
+  "toast": {
+    "created": "Bill created successfully",
+    "updated": "Bill updated",
+    "deleted": "Bill deleted",
+    "markedPaid": "Marked as paid",
+    "markedPending": "Marked as pending"
+  },
+  "dashboard": {
+    "title": "Fixed Bills — {month} {year}",
+    "viewAll": "View all bills"
+  }
+}

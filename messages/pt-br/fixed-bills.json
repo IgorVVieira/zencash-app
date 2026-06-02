@@ -1,0 +1,102 @@
+{
+  "title": "Contas Fixas",
+  "tabBills": "Minhas Contas",
+  "tabMonth": "Este Mês",
+  "addBill": "Adicionar conta fixa",
+  "totalEstimated": "Total estimado por mês",
+  "tooltipAnnual": "Custo mensal equivalente",
+  "emptyState": {
+    "title": "Você ainda não tem contas fixas.",
+    "description": "Adicione suas contas recorrentes para acompanhar seus gastos com mais controle.",
+    "cta": "Adicionar conta fixa"
+  },
+  "emptyMonth": "Nenhuma conta fixa este mês",
+  "noOccurrences": "Nenhuma conta cadastrada",
+  "form": {
+    "createTitle": "Nova conta fixa",
+    "editTitle": "Editar conta fixa",
+    "name": "Nome da conta",
+    "namePlaceholder": "ex: Aluguel, Netflix, Água",
+    "amount": "Valor estimado (R$)",
+    "category": "Categoria (opcional)",
+    "categoryNone": "Nenhuma",
+    "recurrence": "Recorrência",
+    "monthly": "Mensal",
+    "annual": "Anual",
+    "dueDay": "Dia do mês",
+    "dueMonth": "Mês de vencimento",
+    "keywords": "Palavras-chave para match automático",
+    "keywordsHint": "Use palavras que aparecem na descrição do extrato do seu banco (OFX).",
+    "keywordsPlaceholder": "Adicionar palavra-chave",
+    "nameRequired": "Nome é obrigatório",
+    "amountRequired": "Informe um valor positivo",
+    "dueDayInvalid": "Dia inválido (use 1–31)",
+    "keywordsRequired": "Adicione ao menos uma palavra-chave"
+  },
+  "recurrenceLabel": {
+    "MONTHLY": "/mês",
+    "ANNUAL": "/ano"
+  },
+  "dueLabel": {
+    "monthly": "Vence todo dia {day}",
+    "annual": "Vence em {month}, dia {day}"
+  },
+  "months": {
+    "1": "Janeiro",
+    "2": "Fevereiro",
+    "3": "Março",
+    "4": "Abril",
+    "5": "Maio",
+    "6": "Junho",
+    "7": "Julho",
+    "8": "Agosto",
+    "9": "Setembro",
+    "10": "Outubro",
+    "11": "Novembro",
+    "12": "Dezembro"
+  },
+  "summary": {
+    "estimated": "Estimado",
+    "paid": "Pago",
+    "pending": "Pendente",
+    "progress": "{pct}% pago"
+  },
+  "groupHeaders": {
+    "OVERDUE": "Em atraso",
+    "PENDING": "Pendentes",
+    "PAID": "Pagas"
+  },
+  "occurrence": {
+    "dueDateLabel": "Vence em {date}",
+    "overdueDateLabel": "Venceu em {date}",
+    "paidDateLabel": "Pago em {date}",
+    "paidWithEstimated": "{paid} pago (est. {estimated})",
+    "autoMatched": "Importado automaticamente",
+    "payButton": "Pagar",
+    "undoButton": "Desfazer"
+  },
+  "payment": {
+    "markTitle": "Marcar como paga",
+    "revertTitle": "Desfazer pagamento",
+    "paidAmount": "Valor pago (R$)",
+    "revertConfirm": "Tem certeza que deseja marcar \"{name}\" como não pago em {period}?",
+    "confirm": "Confirmar pagamento",
+    "undo": "Desfazer"
+  },
+  "delete": {
+    "title": "Excluir conta fixa",
+    "confirm": "Deseja excluir \"{name}\"? Os registros de pagamento anteriores serão mantidos, mas futuras cobranças serão removidas.",
+    "button": "Excluir"
+  },
+  "toast": {
+    "created": "Conta criada com sucesso",
+    "updated": "Conta atualizada",
+    "deleted": "Conta excluída",
+    "markedPaid": "Marcada como paga",
+    "markedPending": "Marcada como pendente"
+  },
+  "dashboard": {
+    "title": "Contas Fixas — {month} {year}",
+    "viewAll": "Ver todas as contas"
+  }
+}

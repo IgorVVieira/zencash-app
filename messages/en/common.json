@@ -10,6 +10,7 @@
     "categories": "Categories",
     "transactions": "Transactions",
     "importOFX": "Import OFX",
+    "fixedBills": "Fixed Bills",
     "profile": "My profile",
     "logout": "Sign out",
     "collapseMenu": "Collapse menu",
