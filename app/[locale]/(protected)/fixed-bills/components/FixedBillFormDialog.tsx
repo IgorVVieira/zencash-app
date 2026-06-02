@@ -65,6 +65,7 @@ export default function FixedBillFormDialog({
   const [nameError, setNameError] = React.useState('');
   const [amountError, setAmountError] = React.useState('');
   const [dueDayError, setDueDayError] = React.useState('');
+  const [dueMonthError, setDueMonthError] = React.useState('');
   const [keywordsError, setKeywordsError] = React.useState('');
   const [loading, setLoading] = React.useState(false);
 
@@ -92,6 +93,7 @@ export default function FixedBillFormDialog({
     setNameError('');
     setAmountError('');
     setDueDayError('');
+    setDueMonthError('');
     setKeywordsError('');
   }, [open, editingBill]);
 
@@ -136,6 +138,12 @@ export default function FixedBillFormDialog({
       valid = false;
     } else {
       setDueDayError('');
+    }
+    if (recurrence === 'ANNUAL' && !dueMonth) {
+      setDueMonthError(t('form.dueDayInvalid'));
+      valid = false;
+    } else {
+      setDueMonthError('');
     }
     if (keywords.length === 0) {
       setKeywordsError(t('form.keywordsRequired'));
@@ -272,12 +280,15 @@ export default function FixedBillFormDialog({
               sx={{ flex: 1 }}
             />
             {recurrence === 'ANNUAL' && (
-              <FormControl sx={{ flex: 1 }}>
+              <FormControl sx={{ flex: 1 }} error={!!dueMonthError}>
                 <InputLabel id="fb-due-month-label">{t('form.dueMonth')}</InputLabel>
                 <Select
                   labelId="fb-due-month-label"
                   value={dueMonth}
-                  onChange={(e: SelectChangeEvent) => setDueMonth(e.target.value)}
+                  onChange={(e: SelectChangeEvent) => {
+                    setDueMonth(e.target.value);
+                    if (e.target.value) setDueMonthError('');
+                  }}
                   label={t('form.dueMonth')}
                 >
                   {monthOptions.map((m) => (
@@ -286,7 +297,7 @@ export default function FixedBillFormDialog({
                     </MenuItem>
                   ))}
                 </Select>
-                <FormHelperText>{' '}</FormHelperText>
+                <FormHelperText error={!!dueMonthError}>{dueMonthError || ' '}</FormHelperText>
               </FormControl>
             )}
           </Stack>
