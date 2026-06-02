@@ -52,12 +52,13 @@ export default function FixedBillCard({ bill, onEdit, onDelete }: FixedBillCardP
   });
 
   const recurrenceLabel = t(`recurrenceLabel.${bill.recurrence}`);
+  const monthlyLabel = t('recurrenceLabel.MONTHLY');
 
   const dueLabel =
     bill.recurrence === 'MONTHLY'
       ? t('dueLabel.monthly', { day: bill.dueDay })
       : t('dueLabel.annual', {
-          month: t(`months.${bill.dueMonth as 1}`),
+          month: t(`months.${bill.dueMonth as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12}`),
           day: bill.dueDay,
         });
 
@@ -114,7 +115,7 @@ export default function FixedBillCard({ bill, onEdit, onDelete }: FixedBillCardP
               {annualMonthlyEquiv && (
                 <Tooltip title={t('tooltipAnnual')} placement="top">
                   <Typography variant="caption" sx={{ color: 'text.disabled', cursor: 'help' }}>
-                    ≈ {annualMonthlyEquiv}/mês
+                    ≈ {annualMonthlyEquiv}{monthlyLabel}
                   </Typography>
                 </Tooltip>
               )}
