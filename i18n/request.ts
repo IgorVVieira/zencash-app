@@ -18,6 +18,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
     'profile',
     'datagrid',
     'tour',
+    'fixed-bills',
   ] as const;
 
   const messageModules = await Promise.all(
