@@ -30,10 +30,7 @@ export default function FixedBillsWidget({ data, loading, month, year }: FixedBi
   const locale = useLocale();
   const loc = locale === 'pt-br' ? 'pt-BR' : 'en-US';
 
-  const monthName = new Date(year, month - 1).toLocaleDateString(
-    locale === 'pt-br' ? 'pt-BR' : 'en-US',
-    { month: 'long' },
-  );
+  const monthName = new Date(year, month - 1).toLocaleDateString(loc, { month: 'long' });
 
   const fmt = (v: number) =>
     v.toLocaleString(loc, {
