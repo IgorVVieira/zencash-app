@@ -28,7 +28,7 @@ export default function DeleteBillDialog({
   const tc = useTranslations('common');
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={loading ? undefined : onClose} disableEscapeKeyDown={loading}>
       <DialogTitle>{t('delete.title')}</DialogTitle>
       <DialogContent>
         <DialogContentText>

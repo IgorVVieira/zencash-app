@@ -22,7 +22,7 @@ export default function MonthSummaryCards({
   const locale = useLocale();
   const loc = locale === 'pt-br' ? 'pt-BR' : 'en-US';
 
-  const pct = totalEstimated > 0 ? Math.round((totalPaid / totalEstimated) * 100) : 0;
+  const pct = totalEstimated > 0 ? Math.min(100, Math.round((totalPaid / totalEstimated) * 100)) : 0;
 
   const fmt = (v: number) =>
     v.toLocaleString(loc, { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
