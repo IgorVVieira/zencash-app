@@ -8,10 +8,15 @@ import StatCard from '../../dashboard/components/StatCard';
 import LastSixMonthsChart from '../../dashboard/components/LastSixMonthsChart';
 import PaymentMethodsChart from '../../dashboard/components/PaymentMethodsChart';
 import CategoriesChart from '../../dashboard/components/CategoriesChart';
+import FixedBillsWidget from '../../dashboard/components/FixedBillsWidget';
 import {
   getTransactionsByMonth,
   type Transaction,
 } from '../../../lib/transactions';
+import {
+  getFixedBillsDashboard,
+  type FixedBillsDashboard,
+} from '../../../lib/fixed-bills';
 import {
   getPaymentMethodsSummary,
   getCategoriesSummary,
@@ -63,6 +68,8 @@ export default function DashboardPage() {
   const [loadingCatOut, setLoadingCatOut] = React.useState(true);
   const [loadingCatIn, setLoadingCatIn] = React.useState(true);
   const [loadingSixMonths, setLoadingSixMonths] = React.useState(true);
+  const [fixedBillsDashboard, setFixedBillsDashboard] = React.useState<FixedBillsDashboard | null>(null);
+  const [loadingFixedBills, setLoadingFixedBills] = React.useState(true);
 
   React.useEffect(() => {
     const controller = new AbortController();
@@ -73,6 +80,7 @@ export default function DashboardPage() {
       setLoadingCatOut(true);
       setLoadingCatIn(true);
       setLoadingSixMonths(true);
+      setLoadingFixedBills(true);
 
       const results = await Promise.allSettled([
         getTransactionsByMonth(currentMonth, currentYear),
@@ -80,6 +88,7 @@ export default function DashboardPage() {
         getCategoriesSummary(currentMonth, currentYear, 'CASH_OUT'),
         getCategoriesSummary(currentMonth, currentYear, 'CASH_IN'),
         getLastSixMonths(currentMonth, currentYear),
+        getFixedBillsDashboard(currentMonth, currentYear),
       ]);
 
       if (controller.signal.aborted) return;
@@ -98,6 +107,9 @@ export default function DashboardPage() {
 
       if (results[4].status === 'fulfilled') setLastSixMonths(results[4].value);
       setLoadingSixMonths(false);
+
+      if (results[5].status === 'fulfilled') setFixedBillsDashboard(results[5].value);
+      setLoadingFixedBills(false);
     }
 
     loadAll();
@@ -303,6 +315,19 @@ export default function DashboardPage() {
           </motion.div>
         </Grid>
       </Grid>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.4, ease: 'easeOut' }}
+      >
+        <FixedBillsWidget
+          data={fixedBillsDashboard}
+          loading={loadingFixedBills}
+          month={currentMonth}
+          year={currentYear}
+        />
+      </motion.div>
     </Box>
   );
 }
