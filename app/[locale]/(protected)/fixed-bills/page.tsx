@@ -14,7 +14,8 @@ import MonthTab from './components/MonthTab';
 export default function FixedBillsPage() {
   const t = useTranslations('fixed-bills');
   const searchParams = useSearchParams();
-  const initialTab = Number(searchParams.get('tab') ?? '0');
+  const rawTab = Number(searchParams.get('tab') ?? '0');
+  const initialTab = [0, 1].includes(rawTab) ? rawTab : 0;
   const [tab, setTab] = React.useState(initialTab);
 
   return (

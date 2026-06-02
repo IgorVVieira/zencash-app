@@ -95,9 +95,11 @@ export async function deleteFixedBill(id: string): Promise<void> {
 export async function getOccurrences(
   month: number,
   year: number,
+  signal?: AbortSignal,
 ): Promise<FixedBillOccurrence[]> {
   const response = await api.get<FixedBillOccurrence[]>(
     `/api/fixed-bills/occurrences?month=${month}&year=${year}`,
+    { signal },
   );
   return response.data;
 }

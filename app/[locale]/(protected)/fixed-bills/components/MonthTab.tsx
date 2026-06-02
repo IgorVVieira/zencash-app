@@ -31,7 +31,7 @@ export default function MonthTab() {
   const loadOccurrences = React.useCallback(async (signal?: AbortSignal) => {
     setLoading(true);
     try {
-      const data = await getOccurrences(month, year);
+      const data = await getOccurrences(month, year, signal);
       if (signal?.aborted) return;
       setOccurrences(data);
     } catch (err: unknown) {
