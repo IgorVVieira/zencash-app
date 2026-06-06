@@ -1,6 +1,6 @@
-import api from './api';
+import api from "./api";
 
-export type { Transaction } from './transactions';
+export type { Transaction } from "./transactions";
 
 export interface CategorySummary {
   id: string;
@@ -18,7 +18,7 @@ export interface MonthSummary {
 }
 
 export interface PaymentMethodSummary {
-  method: 'PIX' | 'DEBIT' | 'TRANSFER' | 'CARD_PAYMENT' | 'CASH_BACK';
+  method: "PIX" | "DEBIT" | "TRANSFER" | "CARD_PAYMENT" | "CASH_BACK";
   total: number;
 }
 
@@ -35,7 +35,7 @@ export async function getPaymentMethodsSummary(
 export async function getCategoriesSummary(
   month: number,
   year: number,
-  transactionType: 'CASH_IN' | 'CASH_OUT',
+  transactionType: "CASH_IN" | "CASH_OUT",
 ): Promise<CategorySummary[]> {
   const response = await api.get<CategorySummary[]>(
     `/api/transactions/dashboard/categories/${month}/${year}/${transactionType}`,
@@ -43,7 +43,10 @@ export async function getCategoriesSummary(
   return response.data;
 }
 
-export async function getLastSixMonths(month: number, year: number): Promise<MonthSummary[]> {
+export async function getLastSixMonths(
+  month: number,
+  year: number,
+): Promise<MonthSummary[]> {
   const response = await api.get<MonthSummary[]>(
     `/api/transactions/dashboard/last-six-months/${month}/${year}`,
   );

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
-import { getActiveSubscription } from './subscriptions';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import { getActiveSubscription } from "./subscriptions";
 
 const POLL_INTERVAL_MS = 60_000;
 
@@ -17,7 +17,11 @@ const SubscriptionContext = React.createContext<SubscriptionContextValue>({
   loading: true,
 });
 
-export function SubscriptionProvider({ children }: { children: React.ReactNode }) {
+export function SubscriptionProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [hasSubscription, setHasSubscription] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
 
@@ -46,7 +50,14 @@ export function SubscriptionProvider({ children }: { children: React.ReactNode }
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
         <CircularProgress />
       </Box>
     );

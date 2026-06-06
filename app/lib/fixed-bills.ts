@@ -1,8 +1,8 @@
-import api from './api';
+import api from "./api";
 
-export type Recurrence = 'MONTHLY' | 'ANNUAL';
-export type OccurrenceStatus = 'PENDING' | 'PAID' | 'OVERDUE';
-export type SettableOccurrenceStatus = Exclude<OccurrenceStatus, 'OVERDUE'>;
+export type Recurrence = "MONTHLY" | "ANNUAL";
+export type OccurrenceStatus = "PENDING" | "PAID" | "OVERDUE";
+export type SettableOccurrenceStatus = Exclude<OccurrenceStatus, "OVERDUE">;
 
 export interface FixedBill {
   id: string;
@@ -74,18 +74,23 @@ export interface UpdateOccurrenceRequest {
 }
 
 export async function getFixedBills(): Promise<FixedBill[]> {
-  const response = await api.get<FixedBill[]>('/api/fixed-bills');
+  const response = await api.get<FixedBill[]>("/api/fixed-bills");
   return response.data;
 }
 
-export async function createFixedBill(data: CreateFixedBillRequest): Promise<FixedBill> {
-  const response = await api.post<FixedBill>('/api/fixed-bills', data);
-  return response.data;
+export async function createFixedBill(
+  request: CreateFixedBillRequest,
+): Promise<FixedBill> {
+  const { data } = await api.post<FixedBill>("/api/fixed-bills", request);
+  return data;
 }
 
-export async function updateFixedBill(id: string, data: UpdateFixedBillRequest): Promise<FixedBill> {
-  const response = await api.put<FixedBill>(`/api/fixed-bills/${id}`, data);
-  return response.data;
+export async function updateFixedBill(
+  id: string,
+  request: UpdateFixedBillRequest,
+): Promise<FixedBill> {
+  const { data } = await api.put<FixedBill>(`/api/fixed-bills/${id}`, request);
+  return data;
 }
 
 export async function deleteFixedBill(id: string): Promise<void> {
@@ -97,30 +102,30 @@ export async function getOccurrences(
   year: number,
   signal?: AbortSignal,
 ): Promise<FixedBillOccurrence[]> {
-  const response = await api.get<FixedBillOccurrence[]>(
+  const { data } = await api.get<FixedBillOccurrence[]>(
     `/api/fixed-bills/occurrences?month=${month}&year=${year}`,
     { signal },
   );
-  return response.data;
+  return data;
 }
 
 export async function updateOccurrence(
   id: string,
-  data: UpdateOccurrenceRequest,
+  request: UpdateOccurrenceRequest,
 ): Promise<FixedBillOccurrence> {
-  const response = await api.patch<FixedBillOccurrence>(
+  const { data } = await api.patch<FixedBillOccurrence>(
     `/api/fixed-bills/occurrences/${id}`,
-    data,
+    request,
   );
-  return response.data;
+  return data;
 }
 
 export async function getFixedBillsDashboard(
   month: number,
   year: number,
 ): Promise<FixedBillsDashboard | null> {
-  const response = await api.get<{ fixedBills?: FixedBillsDashboard }>(
-    `/api/dashboard?month=${month}&year=${year}`,
+  const { data } = await api.get<{ fixedBills?: FixedBillsDashboard }>(
+    `/api/transactions/dashboard/fixed'bills?month=${month}&year=${year}`,
   );
-  return response.data.fixedBills ?? null;
+  return data?.fixedBills ?? null;
 }

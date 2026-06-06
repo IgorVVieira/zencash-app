@@ -43,7 +43,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       const requestUrl = error.config?.url ?? "";
       const isAuthManagement = AUTH_MANAGEMENT_PATHS.some((path) =>
-        requestUrl.includes(path)
+        requestUrl.includes(path),
       );
       if (!isAuthManagement) {
         localStorage.removeItem("zencash_token");
@@ -55,7 +55,7 @@ api.interceptors.response.use(
     if (error.response?.status === 403) {
       const requestUrl403 = error.config?.url ?? "";
       const isSubscriptionCheck = SUBSCRIPTION_CHECK_PATHS.some((path) =>
-        requestUrl403.includes(path)
+        requestUrl403.includes(path),
       );
       if (isSubscriptionCheck) {
         return Promise.reject(error);
@@ -89,9 +89,15 @@ api.interceptors.response.use(
     if (!error.config?._skipGlobalToast) {
       const status = error.response?.status;
       if (!status) {
-        toastEmitter.emit({ messageKey: "errors.connectionError", severity: "error" });
+        toastEmitter.emit({
+          messageKey: "errors.connectionError",
+          severity: "error",
+        });
       } else if (status !== 401 && status !== 403) {
-        toastEmitter.emit({ messageKey: "errors.unexpectedError", severity: "error" });
+        toastEmitter.emit({
+          messageKey: "errors.unexpectedError",
+          severity: "error",
+        });
       }
     }
 

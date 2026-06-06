@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { Category } from './categories';
+import * as React from "react";
+import { Category } from "./categories";
 
 interface CategoryContextType {
   categories: Category[];
@@ -10,13 +10,22 @@ interface CategoryContextType {
   setEditingCategory: (category: Category | null) => void;
 }
 
-const CategoryContext = React.createContext<CategoryContextType | undefined>(undefined);
+const CategoryContext = React.createContext<CategoryContextType | undefined>(
+  undefined,
+);
 
 export function CategoryProvider({ children }: { children: React.ReactNode }) {
   const [categories, setCategories] = React.useState<Category[]>([]);
-  const [editingCategory, setEditingCategory] = React.useState<Category | null>(null);
+  const [editingCategory, setEditingCategory] = React.useState<Category | null>(
+    null,
+  );
 
-  const value = { categories, setCategories, editingCategory, setEditingCategory };
+  const value = {
+    categories,
+    setCategories,
+    editingCategory,
+    setEditingCategory,
+  };
 
   return (
     <CategoryContext.Provider value={value}>
@@ -28,7 +37,7 @@ export function CategoryProvider({ children }: { children: React.ReactNode }) {
 export function useCategory() {
   const context = React.useContext(CategoryContext);
   if (context === undefined) {
-    throw new Error('useCategory must be used within a CategoryProvider');
+    throw new Error("useCategory must be used within a CategoryProvider");
   }
   return context;
 }
